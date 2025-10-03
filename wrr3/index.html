@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>R33 Cars — Modern Showcase</title>
+  <meta name="description" content="Modern luxury and armored vehicles showroom UI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji']
+          },
+          boxShadow: {
+            soft: '0 8px 30px rgba(2, 6, 23, 0.06)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass { backdrop-filter: saturate(150%) blur(6px); background: rgba(255,255,255,0.75); }
+  </style>
+</head>
+<body class="bg-white text-slate-900 antialiased">
+
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
+    <div class="mx-auto max-w-7xl px-4">
+      <div class="flex items-center justify-between py-4">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-md bg-brand-700 grid place-content-center text-white font-black">R33</div>
+          <span class="font-semibold tracking-wide text-slate-800">R33 Cars</span>
+        </a>
+        <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+          <a class="text-slate-700 hover:text-brand-700" href="index.html">Home</a>
+          <div class="group relative">
+            <button class="inline-flex items-center gap-1 text-slate-700 hover:text-brand-700">Category<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"/></svg></button>
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all absolute left-0 mt-2 w-56 rounded-xl shadow-soft border border-slate-200 bg-white p-2">
+              <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Armored">Armored</a>
+              <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Coupe">Coupe</a>
+              <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=SUV">SUV</a>
+              <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Sedan">Sedan</a>
+              <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Electric">Electric Vehicle</a>
+            </div>
+          </div>
+          <div class="group relative">
+            <button class="inline-flex items-center gap-1 text-slate-700 hover:text-brand-700">Brands<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"/></svg></button>
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all absolute left-0 mt-2 w-[28rem] rounded-xl shadow-soft border border-slate-200 bg-white p-3 grid grid-cols-2 gap-1">
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Aston%20Martin">Aston Martin</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Audi">Audi</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Bentley">Bentley</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=BMW">BMW</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Ferrari">Ferrari</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Lamborghini">Lamborghini</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Mercedes-Benz">Mercedes-Benz</a>
+              <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Porsche">Porsche</a>
+            </div>
+          </div>
+          <a class="text-slate-700 hover:text-brand-700" href="#">Downloads</a>
+        </nav>
+        <div class="hidden lg:flex items-center gap-3">
+          <div class="relative">
+            <input class="w-64 rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-brand-100 focus:border-brand-400" placeholder="Search vehicles…" />
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.9 14.32a8 8 0 1 1 1.41-1.41l3.4 3.4a1 1 0 0 1-1.42 1.42l-3.39-3.41ZM14 8a6 6 0 1 0-12 0 6 6 0 0 0 12 0Z" clip-rule="evenodd"/></svg></span>
+          </div>
+          <a href="#" class="inline-flex items-center gap-2 rounded-xl bg-brand-700 px-4 py-2 text-white shadow-soft hover:bg-brand-800">Contact</a>
+        </div>
+        <button class="lg:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-700 hover:bg-slate-100" aria-label="Open menu">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-brand-900 to-brand-700 text-white">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.16),transparent_60%)]"></div>
+    <div class="mx-auto max-w-7xl px-4 pt-16 pb-24 relative">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm ring-1 ring-white/20">Premium • Armored • Exotic</div>
+          <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">Discover elite vehicles curated for performance and protection</h1>
+          <p class="mt-4 text-white/80 max-w-xl">Experience a refined catalog of supercars, luxury sedans, SUVs, and bullet-proof builds. Built with a modern shopping experience for your clients.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#featured" class="inline-flex items-center gap-2 rounded-xl bg-white text-brand-800 px-5 py-3 font-semibold hover:bg-brand-50">Browse Featured</a>
+            <a href="#contact" class="inline-flex items-center gap-2 rounded-xl bg-brand-600/40 px-5 py-3 font-semibold ring-1 ring-white/30 hover:bg-brand-600/60">Book a Viewing</a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="aspect-[16/10] rounded-3xl shadow-2xl shadow-black/20 ring-1 ring-white/20 overflow-hidden">
+            <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop" alt="Luxury car showcase" />
+          </div>
+          <div class="absolute -bottom-6 -left-6 glass rounded-2xl shadow-soft p-4 w-72">
+            <div class="text-sm text-slate-700 font-semibold">Editor's Choice</div>
+            <div class="mt-1 font-bold text-slate-900">2012 Ferrari 458 Italia</div>
+            <div class="text-brand-700 font-semibold">Php 12,500,000.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="mt-12 rounded-2xl bg-white/90 backdrop-blur ring-1 ring-slate-200 p-3">
+        <form class="grid md:grid-cols-5 gap-3">
+          <input class="col-span-2 rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-brand-100 focus:border-brand-400" placeholder="Search by model or keyword" />
+          <select class="rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-brand-100 focus:border-brand-400">
+            <option>Any Category</option>
+            <option>Armored</option>
+            <option>Coupe</option>
+            <option>SUV</option>
+            <option>Sedan</option>
+            <option>Electric</option>
+          </select>
+          <select class="rounded-xl border border-slate-300 px-4 py-3 focus:outline-none focus:ring-4 focus:ring-brand-100 focus:border-brand-400">
+            <option>Any Brand</option>
+            <option>Aston Martin</option>
+            <option>BMW</option>
+            <option>Ferrari</option>
+            <option>Lamborghini</option>
+            <option>Mercedes-Benz</option>
+            <option>Porsche</option>
+            <option>Toyota</option>
+          </select>
+          <button class="rounded-xl bg-brand-700 px-5 py-3 font-semibold text-white hover:bg-brand-800">Search</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Vehicles -->
+  <section id="featured" class="py-16 md:py-20">
+    <div class="mx-auto max-w-7xl px-4">
+      <div class="flex items-end justify-between gap-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Featured Vehicles</h2>
+          <p class="text-slate-600 mt-2">Handpicked inventory, meticulously maintained and ready to drive.</p>
+        </div>
+        <a href="#" class="hidden md:inline-flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">View all</a>
+      </div>
+
+      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Card Template -->
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?q=80&w=1200&auto=format&fit=crop" alt="Aston Martin" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-1 text-xs font-semibold text-white">Hot</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2019 Aston Martin Vantage S</h3>
+            <div class="mt-1 text-brand-700 font-semibold">Php 9,500,000.00</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>RWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1200&auto=format&fit=crop" alt="Bentley" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-brand-700 px-2.5 py-1 text-xs font-semibold text-white">New</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2024 Bentley Continental GT S</h3>
+            <div class="mt-1 text-slate-700 font-semibold">Price on request</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>AWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?q=80&w=1200&auto=format&fit=crop" alt="Ferrari 458" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-fuchsia-600 px-2.5 py-1 text-xs font-semibold text-white">Editor's Choice</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2012 Ferrari 458 Italia</h3>
+            <div class="mt-1 text-brand-700 font-semibold">Php 12,500,000.00</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>RWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1517672338397-070150310acd?q=80&w=1200&auto=format&fit=crop" alt="Lamborghini" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white">Hybrid</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2006 Lamborghini Gallardo</h3>
+            <div class="mt-1 text-brand-700 font-semibold">Php 8,500,000.00</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>AWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1549921296-3a6b3d8a4f83?q=80&w=1200&auto=format&fit=crop" alt="Porsche" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-orange-500 px-2.5 py-1 text-xs font-semibold text-white">Hot</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2020 Porsche 718 Cayman</h3>
+            <div class="mt-1 text-brand-700 font-semibold">Php 5,800,000.00</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>RWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1549921296-3a6b3d8a4f83?q=80&w=1200&auto=format&fit=crop" alt="Rolls Royce" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-xs font-semibold text-white">Luxury</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2014 Rolls-Royce Wraith</h3>
+            <div class="mt-1 text-slate-700 font-semibold">Price on request</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>RWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1638138820882-bd6cd9c4024b?q=80&w=1200&auto=format&fit=crop" alt="G63" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-red-600 px-2.5 py-1 text-xs font-semibold text-white">Bullet Proof</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2016 Mercedes-Benz G63 AMG</h3>
+            <div class="mt-1 text-brand-700 font-semibold">Php 9,500,000.00</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Gasoline</span>
+              <span>AWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1606660357197-5d8c2a4448e2?q=80&w=1200&auto=format&fit=crop" alt="Tesla" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white">Electric</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2023 Tesla Model S Plaid</h3>
+            <div class="mt-1 text-slate-700 font-semibold">Price on request</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Electric</span>
+              <span>AWD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-soft hover:-translate-y-0.5 hover:shadow-lg transition">
+          <div class="relative">
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1608330405071-3d41bb4d0a2d?q=80&w=1200&auto=format&fit=crop" alt="Land Cruiser" />
+            <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-red-600 px-2.5 py-1 text-xs font-semibold text-white">Bullet Proof</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-slate-900 group-hover:text-brand-700">2022 Toyota Land Cruiser LC300 Armored</h3>
+            <div class="mt-1 text-brand-700 font-semibold">Php 8,900,000.00</div>
+            <div class="mt-3 flex items-center justify-between text-sm text-slate-500">
+              <span>Automatic</span>
+              <span>Diesel</span>
+              <span>4x4</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="py-16 bg-slate-50">
+    <div class="mx-auto max-w-7xl px-4">
+      <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Shop by Category</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        <a class="group relative overflow-hidden rounded-2xl bg-white p-5 ring-1 ring-slate-200 hover:ring-brand-300 hover:shadow-soft" href="category.html?type=Armored">
+          <div class="font-semibold">Armored</div>
+          <span class="text-sm text-slate-500">Protected SUVs & sedans</span>
+          <span class="absolute right-3 top-3 text-slate-300 group-hover:text-brand-400">→</span>
+        </a>
+        <a class="group relative overflow-hidden rounded-2xl bg-white p-5 ring-1 ring-slate-200 hover:ring-brand-300 hover:shadow-soft" href="category.html?type=Coupe">
+          <div class="font-semibold">Coupe</div>
+          <span class="text-sm text-slate-500">Two-door performance</span>
+          <span class="absolute right-3 top-3 text-slate-300 group-hover:text-brand-400">→</span>
+        </a>
+        <a class="group relative overflow-hidden rounded-2xl bg-white p-5 ring-1 ring-slate-200 hover:ring-brand-300 hover:shadow-soft" href="category.html?type=SUV">
+          <div class="font-semibold">SUV</div>
+          <span class="text-sm text-slate-500">Family & utility</span>
+          <span class="absolute right-3 top-3 text-slate-300 group-hover:text-brand-400">→</span>
+        </a>
+        <a class="group relative overflow-hidden rounded-2xl bg-white p-5 ring-1 ring-slate-200 hover:ring-brand-300 hover:shadow-soft" href="category.html?type=Sedan">
+          <div class="font-semibold">Sedan</div>
+          <span class="text-sm text-slate-500">Executive comfort</span>
+          <span class="absolute right-3 top-3 text-slate-300 group-hover:text-brand-400">→</span>
+        </a>
+        <a class="group relative overflow-hidden rounded-2xl bg-white p-5 ring-1 ring-slate-200 hover:ring-brand-300 hover:shadow-soft" href="category.html?type=Electric">
+          <div class="font-semibold">Electric</div>
+          <span class="text-sm text-slate-500">Zero-emission speed</span>
+          <span class="absolute right-3 top-3 text-slate-300 group-hover:text-brand-400">→</span>
+        </a>
+        <a class="group relative overflow-hidden rounded-2xl bg-white p-5 ring-1 ring-slate-200 hover:ring-brand-300 hover:shadow-soft" href="category.html?type=Motorcycles">
+          <div class="font-semibold">Motorcycles</div>
+          <span class="text-sm text-slate-500">Rare two-wheels</span>
+          <span class="absolute right-3 top-3 text-slate-300 group-hover:text-brand-400">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands -->
+  <section class="py-14">
+    <div class="mx-auto max-w-7xl px-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-slate-900">Popular Brands</h2>
+        <a href="#" class="hidden md:inline text-sm text-brand-700 hover:underline">See all brands</a>
+      </div>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        <a class="rounded-2xl border border-slate-200 p-6 text-center text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition" href="brand.html?brand=Aston%20Martin">Aston Martin</a>
+        <a class="rounded-2xl border border-slate-200 p-6 text-center text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition" href="brand.html?brand=Bentley">Bentley</a>
+        <a class="rounded-2xl border border-slate-200 p-6 text-center text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition" href="brand.html?brand=Ferrari">Ferrari</a>
+        <a class="rounded-2xl border border-slate-200 p-6 text-center text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition" href="brand.html?brand=Lamborghini">Lamborghini</a>
+        <a class="rounded-2xl border border-slate-200 p-6 text-center text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition" href="brand.html?brand=Mercedes-Benz">Mercedes-Benz</a>
+        <a class="rounded-2xl border border-slate-200 p-6 text-center text-slate-600 hover:bg-brand-50 hover:text-brand-700 transition" href="brand.html?brand=Porsche">Porsche</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Strip -->
+  <section class="py-12 bg-brand-900 text-brand-50">
+    <div class="mx-auto max-w-7xl px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <h3 class="text-2xl font-bold">Book a private showroom visit</h3>
+        <p class="text-brand-100">Experience our vehicles up close with a dedicated specialist.</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="#" class="inline-flex items-center rounded-xl bg-white text-brand-800 px-5 py-3 font-semibold hover:bg-brand-50">Schedule now</a>
+        <a href="#" class="inline-flex items-center rounded-xl ring-1 ring-white/40 px-5 py-3 font-semibold hover:bg-white/10">Call us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-slate-900 text-slate-200">
+    <div class="mx-auto max-w-7xl px-4 py-14 grid md:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-md bg-brand-600 grid place-content-center text-white font-black">R33</div>
+          <span class="font-semibold tracking-wide">R33 Cars</span>
+        </div>
+        <p class="mt-4 text-slate-400">Premium cars, bullet-proof solutions, and curated exotics in the Philippines.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white">Showroom</h4>
+        <ul class="mt-3 space-y-2 text-slate-400 text-sm">
+          <li>19 Xavierville Avenue, Loyola Heights</li>
+          <li>Quezon City, Philippines</li>
+          <li>Mon–Sat: 9:00am–5:00pm</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white">Explore</h4>
+        <ul class="mt-3 space-y-2 text-slate-400 text-sm">
+          <li><a class="hover:text-white" href="#featured">Featured</a></li>
+          <li><a class="hover:text-white" href="#">Categories</a></li>
+          <li><a class="hover:text-white" href="#">Brands</a></li>
+          <li><a class="hover:text-white" href="#">Downloads</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white">Contact</h4>
+        <ul class="mt-3 space-y-2 text-slate-400 text-sm">
+          <li>+63-2-8708-6802</li>
+          <li>+63-998-555-3333</li>
+          <li>info@r33cars.com</li>
+        </ul>
+        <div class="mt-4 flex gap-3">
+          <a class="w-9 h-9 grid place-content-center rounded-lg bg-white/10 hover:bg-white/20" href="#" aria-label="Facebook">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 9H15V6h-1.5C11.57 6 10 7.57 10 9.5V11H8v3h2v6h3v-6h2.02L15 11h-2v-1.5c0-.28.22-.5.5-.5Z"/></svg>
+          </a>
+          <a class="w-9 h-9 grid place-content-center rounded-lg bg-white/10 hover:bg-white/20" href="#" aria-label="Instagram">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5Zm6-1a1 1 0 1 0 1 1 1 1 0 0 0-1-1Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10">
+      <div class="mx-auto max-w-7xl px-4 py-6 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-4">
+        <span>© R33 Cars 2025</span>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-white">Privacy</a>
+          <a href="#" class="hover:text-white">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+

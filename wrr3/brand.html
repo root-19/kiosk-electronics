@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Brand • Ferrari — R33 Cars</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="assets/style.css" rel="stylesheet"/>
+</head>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50: '#eff6ff',
+            100: '#dbeafe',
+            200: '#bfdbfe',
+            300: '#93c5fd',
+            400: '#60a5fa',
+            500: '#3b82f6',
+            600: '#2563eb',
+            700: '#1d4ed8',
+            800: '#1e40af',
+            900: '#1e3a8a'
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji']
+        },
+        boxShadow: {
+          soft: '0 8px 30px rgba(2, 6, 23, 0.06)'
+        }
+      }
+    }
+  }
+</script>
+<body>
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="flex items-center justify-between py-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md bg-brand-700 grid place-content-center text-white font-black">R33</div>
+        <span class="font-semibold tracking-wide text-slate-800">R33 Cars</span>
+      </a>
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+        <a class="text-slate-700 hover:text-brand-700" href="index.html">Home</a>
+        <div class="group relative">
+          <button class="inline-flex items-center gap-1 text-slate-700 hover:text-brand-700">Category<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"/></svg></button>
+          <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all absolute left-0 mt-2 w-56 rounded-xl shadow-soft border border-slate-200 bg-white p-2">
+            <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Armored">Armored</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Coupe">Coupe</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=SUV">SUV</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Sedan">Sedan</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-brand-50" href="category.html?type=Electric">Electric Vehicle</a>
+          </div>
+        </div>
+        <div class="group relative">
+          <button class="inline-flex items-center gap-1 text-slate-700 hover:text-brand-700">Brands<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"/></svg></button>
+          <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all absolute left-0 mt-2 w-[28rem] rounded-xl shadow-soft border border-slate-200 bg-white p-3 grid grid-cols-2 gap-1">
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Aston%20Martin">Aston Martin</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Audi">Audi</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Bentley">Bentley</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=BMW">BMW</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Ferrari">Ferrari</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Lamborghini">Lamborghini</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Mercedes-Benz">Mercedes-Benz</a>
+            <a class="px-3 py-2 rounded-lg hover:bg-brand-50" href="brand.html?brand=Porsche">Porsche</a>
+          </div>
+        </div>
+        <a class="text-slate-700 hover:text-brand-700" href="#">Downloads</a>
+      </nav>
+      <div class="hidden lg:flex items-center gap-3">
+        <div class="relative">
+          <input class="w-64 rounded-xl border border-slate-300 bg-white/70 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-brand-100 focus:border-brand-400" placeholder="Search vehicles…" />
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.9 14.32a8 8 0 1 1 1.41-1.41l3.4 3.4a1 1 0 0 1-1.42 1.42l-3.39-3.41ZM14 8a6 6 0 1 0-12 0 6 6 0 0 0 12 0Z" clip-rule="evenodd"/></svg></span>
+        </div>
+        <a href="#" class="inline-flex items-center gap-2 rounded-xl bg-brand-700 px-4 py-2 text-white shadow-soft hover:bg-brand-800">Contact</a>
+      </div>
+      <button class="lg:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-700 hover:bg-slate-100" aria-label="Open menu">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<section class="hero-mini">
+  <div class="container brand-hero">
+    <nav class="breadcrumb"><a href="index.html">Home</a><span>/</span><a href="brand.html">Brands</a><span>/</span><span>Ferrari</span></nav>
+    <img src="assets/images/brand-ferrari.svg" alt="Ferrari stylized emblem"/>
+    <h1 style="margin:0;font-size:2.4rem;">Ferrari Selection</h1>
+    <p style="max-width:720px;font-size:.95rem;line-height:1.5;color:rgba(255,255,255,.85)">Curated Ferrari lineup blending track-derived innovation with Italian design purity. Focus models include rare V8 icons and bespoke client-specified builds.</p>
+  </div>
+</section>
+<section class="bg-gradient-to-br from-brand-50 via-white to-brand-100 py-12 min-h-screen">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-brand-800 mb-2">Available / Featured Units</h2>
+    <p class="text-slate-500 mb-8 max-w-2xl">Curated Ferrari lineup blending track-derived innovation with Italian design purity. Focus models include rare V8 icons and bespoke client-specified builds.</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+        <div class="relative overflow-hidden">
+          <img class="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?q=80&w=1200&auto=format&fit=crop" alt="Ferrari 458" />
+        </div>
+        <div class="p-5 flex flex-col gap-2">
+          <h3 class="font-semibold text-slate-900 group-hover:text-brand-700 text-lg">2012 Ferrari 458 Italia</h3>
+          <div class="text-brand-700 font-semibold mt-2">Php 12,500,000.00</div>
+          <div class="flex items-center gap-2 text-xs mt-2">
+            <span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-1 font-semibold text-blue-700">Automatic</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-1 font-semibold text-orange-700">Gasoline</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 font-semibold text-green-700">RWD</span>
+          </div>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-700 px-4 py-2 text-white font-semibold shadow-soft hover:bg-brand-800 transition">Download Brochure<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg></a>
+        </div>
+      </article>
+      <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+        <div class="relative overflow-hidden">
+          <img class="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1200&auto=format&fit=crop" alt="Ferrari V12" />
+        </div>
+        <div class="p-5 flex flex-col gap-2">
+          <h3 class="font-semibold text-slate-900 group-hover:text-brand-700 text-lg">2020 Ferrari 812 Superfast</h3>
+          <div class="text-slate-700 font-semibold mt-2">Price on request</div>
+          <div class="flex items-center gap-2 text-xs mt-2">
+            <span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-1 font-semibold text-blue-700">Automatic</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-1 font-semibold text-orange-700">Gasoline</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 font-semibold text-green-700">RWD</span>
+          </div>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-700 px-4 py-2 text-white font-semibold shadow-soft hover:bg-brand-800 transition">Download Brochure<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg></a>
+        </div>
+      </article>
+      <article class="group rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+        <div class="relative overflow-hidden">
+          <img class="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1549921296-3a6b3d8a4f83?q=80&w=1200&auto=format&fit=crop" alt="Ferrari rare" />
+        </div>
+        <div class="p-5 flex flex-col gap-2">
+          <h3 class="font-semibold text-slate-900 group-hover:text-brand-700 text-lg">2019 Ferrari Portofino</h3>
+          <div class="text-brand-700 font-semibold mt-2">Php 11,800,000.00</div>
+          <div class="flex items-center gap-2 text-xs mt-2">
+            <span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-1 font-semibold text-blue-700">Automatic</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-1 font-semibold text-orange-700">Gasoline</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-1 font-semibold text-green-700">RWD</span>
+          </div>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-700 px-4 py-2 text-white font-semibold shadow-soft hover:bg-brand-800 transition">Download Brochure<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container" style="display:flex;flex-wrap:wrap;gap:2.5rem;">
+    <div class="brand"><span class="brand-mark">R33</span><span>R33 Cars</span></div>
+    <small style="opacity:.7">© 2025 R33 Cars</small>
+  </div>
+</footer>
+</body>
+</html>
