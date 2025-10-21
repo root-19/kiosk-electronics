@@ -9,11 +9,18 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, ClipboardCheck, Megaphone, Calendar, GraduationCap, Compass, Clock, FileText } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid,
+     ClipboardCheck, Megaphone, Calendar,
+      GraduationCap, Compass, Clock, FileText, 
+      Users, UserCheck, BookMarked, CalendarDays, Trophy
+    } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -26,6 +33,15 @@ const mainNavItems: NavItem[] = [
     { title: 'Learning', href: '/learning', icon: BookOpen },
     { title: 'Schedule', href: '/schedule', icon: Clock },
     { title: 'Syllabus', href: '/syllabus', icon: FileText },
+    { title: 'Delegates', href: '/delegates', icon: Trophy },
+
+];
+
+const scheduleNavItems: NavItem[] = [
+    { title: 'Sections', href: '/sections', icon: Users },
+    { title: 'Professors', href: '/professors', icon: UserCheck },
+    { title: 'Subjects', href: '/subjects', icon: BookMarked },
+    { title: 'Schedules', href: '/schedules', icon: CalendarDays },
 ];
 
 
@@ -46,6 +62,30 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <SidebarGroup className="px-2 py-0">
+                    <SidebarGroupLabel>Schedule Management</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {scheduleNavItems.map((item) => {
+                                const href = typeof item.href === "string" ? item.href : item.href.url;
+                                
+                                return (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            tooltip={{ children: item.title }}
+                                        >
+                                            <Link href={href} prefetch>
+                                                {item.icon && <item.icon className="w-4 h-4 mr-2" />}
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                );
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
             </SidebarContent>
 
             <SidebarFooter>

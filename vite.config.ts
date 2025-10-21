@@ -20,4 +20,10 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
+    server: {
+        port:8080,
+        hmr: {
+            overlay: false,
+        },
+    },
 });

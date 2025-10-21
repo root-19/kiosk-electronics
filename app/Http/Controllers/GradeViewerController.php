@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Grade;
-use App\Models\GradeViewer;
+use App\Models\GradeViewer; 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class GradeViewerController extends Controller
 {
     // Admin: manage + edit grades
     public function index()
     {
-        $grades = GradeViewer::orderBy('id', 'desc')->get();
+        $grades = GradeViewer::all();
 
         return Inertia::render('GradeViewer', [
-            'grades' => $grades
+            'grades' => $grades,
         ]);
     }
 
@@ -29,20 +30,19 @@ class GradeViewerController extends Controller
         ]);
     }
 
-   public function updateGrade(Request $request)
-{
-    $request->validate([
-        'id' => 'required|integer|exists:grade_viewers,id',
-        'grade' => 'required|numeric|min:0|max:100',
-    ]);
+    public function updateGrade(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:grade_viewers,id',
+            'grade' => 'required|numeric|min:0|max:100',
+        ]);
 
-    $grade = GradeViewer::findOrFail($request->id);
-    $grade->grade = $request->grade;
-    $grade->save();
+        $grade = GradeViewer::findOrFail($request->id);
+        $grade->grade = $request->grade;
+        $grade->save();
 
-    return redirect()->back()->with('success', 'Grade updated successfully.');
-}
-
+        return redirect()->back()->with('success', 'Grade updated successfully.');
+    }
 
     public function store(Request $request)
     {

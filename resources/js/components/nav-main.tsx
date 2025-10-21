@@ -1,5 +1,6 @@
 import {
   SidebarGroup,
+  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
@@ -19,27 +20,29 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
   return (
     <SidebarGroup className="px-2 py-0">
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => {
-          const href = typeof item.href === "string" ? item.href : item.href.url;
-          const isActive = page.url.startsWith(href);
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map((item) => {
+            const href = typeof item.href === "string" ? item.href : item.href.url;
+            const isActive = page.url.startsWith(href);
 
-          return (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                asChild
-                isActive={isActive}
-                tooltip={{ children: item.title }}
-              >
-                <Link href={href} prefetch>
-                  {item.icon && <item.icon className="w-4 h-4 mr-2" />}
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          );
-        })}
-      </SidebarMenu>
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  tooltip={{ children: item.title }}
+                >
+                  <Link href={href} prefetch>
+                    {item.icon && <item.icon className="w-4 h-4 mr-2" />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarGroupContent>
     </SidebarGroup>
   );
 }

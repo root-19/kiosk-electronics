@@ -21,8 +21,8 @@ interface LoginProps {
 export default function Login({ status, canResetPassword }: LoginProps) {
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
     const [activeInput, setActiveInput] = useState<'email' | 'password' | null>(null);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('kiosk@gmail.com');
+    const [password, setPassword] = useState('kiosk123');
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -77,7 +77,38 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         }, 100);
     };
 
-    // Update form data when state changes
+    // Handle physical keyboard input when kiosk keyboard is not visible
+    useEffect(() => {
+        const handleInputChange = (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            if (target.id === 'email') {
+                setEmail(target.value);
+            } else if (target.id === 'password') {
+                setPassword(target.value);
+            }
+        };
+
+        const emailInput = emailRef.current;
+        const passwordInput = passwordRef.current;
+
+        if (emailInput) {
+            emailInput.addEventListener('input', handleInputChange);
+        }
+        if (passwordInput) {
+            passwordInput.addEventListener('input', handleInputChange);
+        }
+
+        return () => {
+            if (emailInput) {
+                emailInput.removeEventListener('input', handleInputChange);
+            }
+            if (passwordInput) {
+                passwordInput.removeEventListener('input', handleInputChange);
+            }
+        };
+    }, []);
+
+    // Update form data when state changes (for kiosk keyboard)
     useEffect(() => {
         if (emailRef.current) {
             emailRef.current.value = email;
@@ -133,7 +164,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                         autoComplete="email"
                                         placeholder="email@example.com"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
                                         onFocus={() => handleInputFocus('email')}
                                         onBlur={handleInputBlur}
                                         className={`${activeInput === 'email' ? 'ring-2 ring-blue-500 border-blue-500' : ''}`}
@@ -176,7 +206,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                         autoComplete="current-password"
                                         placeholder="Password"
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
                                         onFocus={() => handleInputFocus('password')}
                                         onBlur={handleInputBlur}
                                         className={`${activeInput === 'password' ? 'ring-2 ring-blue-500 border-blue-500' : ''}`}
@@ -225,49 +254,11 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
                 {/* Keyboard Overlay */}
                 {isKeyboardVisible && (
-                    <div className="fixed inset-0 z-50 bg-black/50 flex items-end">
-                        <div className="w-full bg-white rounded-t-lg shadow-lg kiosk-keyboard">
-                            <div className="flex items-center justify-between p-4 border-b">
-                                <div className="flex items-center gap-2">
-                                    <Keyboard className="h-5 w-5" />
-                                    <span className="font-medium">
-                                        Kiosk Keyboard - {activeInput === 'email' ? 'Email' : 'Password'}
-                                    </span>
-                                </div>
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={handleKeyboardClose}
-                                    className="flex items-center gap-2"
-                                >
-                                    <X className="h-4 w-4" />
-                                    Close
-                                </Button>
-                            </div>
-                            
-                            {/* Current input display */}
-                            <div className="p-4 border-b bg-gray-50">
-                                <Label className="text-sm text-gray-600">
-                                    {activeInput === 'email' ? 'Email' : 'Password'}:
-                                </Label>
-                                <div className="mt-1 p-2 bg-white border rounded text-sm font-mono">
-                                    {activeInput === 'email' 
-                                        ? email || 'Type your email...'
-                                        : password ? '•'.repeat(password.length) : 'Type your password...'
-                                    }
-                                </div>
-                            </div>
-
-                            <KioskKeyboard
-                                isVisible={true}
-                                value={activeInput === 'email' ? email : password}
-                                onChange={activeInput === 'email' ? setEmail : setPassword}
-                                onClose={handleKeyboardClose}
-                                onKeyPress={handleKeyPress}
-                            />
-                        </div>
-                    </div>
+                    <KioskKeyboard
+                        value={activeInput === 'email' ? email : password}
+                        onChange={activeInput === 'email' ? setEmail : setPassword}
+                        onClose={handleKeyboardClose}
+                    />
                 )}
             </div>
         </AuthLayout>

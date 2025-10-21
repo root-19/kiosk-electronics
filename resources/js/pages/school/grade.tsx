@@ -1,6 +1,6 @@
 import { Head, usePage, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import KioskKeyboard from '@/Components/kiosk-keyboard'; // Adjust path as needed
+import KioskKeyboard from '@/Components/kiosk-keyboard'; 
 
 type GradeViewer = {
   id: number;

@@ -1,5 +1,5 @@
-import { Head, router, usePage } from '@inertiajs/react';
-import { useState, FormEvent } from 'react';
+import { Head, router } from '@inertiajs/react';
+import { useState, FormEvent, useEffect } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import Swal from 'sweetalert2';
 
@@ -20,9 +20,8 @@ type PageProps = {
   grades: GradeEntry[];
 };
 
-export default function GradeViewer() {
-  const { props } = usePage<PageProps>();
-  const grades = props.grades || [];
+export default function GradeViewer({ grades }: PageProps) {
+
 
   const [formData, setFormData] = useState({
     id_number: '',
@@ -84,7 +83,8 @@ export default function GradeViewer() {
     setIsLoading(true);
     
     router.post('/grade-viewer', formData, {
-      onSuccess: () => {
+      onSuccess: (page) => {
+        console.log('After submit - Page:', page);
         setFormData({
           id_number: '',
           last_name: '',
@@ -98,7 +98,6 @@ export default function GradeViewer() {
         setIsLoading(false);
         setShowForm(false);
         
-        // Show success alert
         Swal.fire({
           title: 'Success!',
           text: 'Student added successfully!',
@@ -113,7 +112,6 @@ export default function GradeViewer() {
         console.error('Form submission errors:', errors);
         setIsLoading(false);
         
-        // Show error alert
         Swal.fire({
           title: 'Error!',
           text: 'Failed to add student. Please try again.',
@@ -181,9 +179,9 @@ export default function GradeViewer() {
     }
   };
 
-  // Group grades by level
+  // Note: grouping by lavels kamerut
   const groupedGrades = grades.reduce((acc, grade) => {
-    const level = grade.level || 'No Level';
+    const level = grade.level || 'No Level sah';
     if (!acc[level]) acc[level] = [];
     acc[level].push(grade);
     return acc;
@@ -194,6 +192,7 @@ export default function GradeViewer() {
       <Head title="Grade Viewer" />
       <div className="min-h-screen bg-black text-white p-6 space-y-8">
         <h1 className="text-3xl font-bold mb-6 text-white">Grade Viewer</h1>
+
 
         {/* Toggle Button */}
         <div className="flex justify-start">
@@ -348,8 +347,35 @@ export default function GradeViewer() {
         {/* Tables grouped by level */}
         <div className="space-y-8">
           {Object.keys(groupedGrades).length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-400 text-xl">No students found.</p>
+            // Show empty table structure when no data
+            <div className="w-full">
+              <h2 className="text-2xl font-bold mb-4 text-white">Student Records</h2>
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-gray-800 rounded-xl shadow-md overflow-hidden">
+                  <thead className="bg-gray-700">
+                    <tr>
+                      <th className="py-3 px-6 text-left text-white">ID</th>
+                      <th className="py-3 px-6 text-left text-white">ID Number</th>
+                      <th className="py-3 px-6 text-left text-white">Last Name</th>
+                      <th className="py-3 px-6 text-left text-white">First Name</th>
+                      <th className="py-3 px-6 text-left text-white">Middle Name</th>
+                      <th className="py-3 px-6 text-left text-white">Extra Name</th>
+                      <th className="py-3 px-6 text-left text-white">Program</th>
+                      <th className="py-3 px-6 text-left text-white">Level</th>
+                      <th className="py-3 px-6 text-left text-white">Grade</th>
+                      <th className="py-3 px-6 text-left text-white">Date Validated</th>
+                      <th className="py-3 px-6 text-left text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colSpan={11} className="py-8 px-6 text-center text-gray-400 text-xl">
+                        No students found. Add a student to get started.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           ) : (
             Object.entries(groupedGrades).map(([level, levelGrades]) => (

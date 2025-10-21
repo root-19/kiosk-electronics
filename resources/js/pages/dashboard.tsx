@@ -10,6 +10,7 @@ import {
   Compass,
   BookOpen,
   Clock,
+  Trophy,
   FileText,
 } from 'lucide-react';
 
@@ -28,7 +29,9 @@ const sections = [
   { title: 'Orientation', description: 'Start with resources.', icon: Compass, href: '/orientation' },
   { title: 'Learning', description: 'Access learning modules.', icon: BookOpen, href: '/learning' },
   { title: 'Schedule', description: 'See your class timetable.', icon: Clock, href: '/schedule' },
-  { title: 'Syllabus', description: 'Review course outlines.', icon: FileText, href: '/syllabus' },
+  { title: 'Gelegates', description: 'See teh delegates ICCAAC Delegates.', icon: Trophy, href: '/delegates' },
+
+  // { title: 'Syllabus', description: 'Review course outlines.', icon: FileText, href: syllabus.index().url },
 ];
 
 export default function Dashboard() {

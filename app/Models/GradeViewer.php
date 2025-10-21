@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GradeViewer extends Model
 {
     use HasFactory;
-
+     protected $table = 'grade_viewers';
     protected $fillable = [
         'id_number',
         'last_name',
@@ -20,5 +19,9 @@ class GradeViewer extends Model
         'level',
         'grade',
         'date_validated',
+    ];
+
+    protected $casts = [
+        'date_validated' => 'date',
     ];
 }

@@ -12,11 +12,13 @@ const routes = [
     { name: 'Calendar Product', href: '/school/calendar' },
     { name: 'ICT Orientation', href: '/orientation' },
     { name: 'Program Accomplish', href: '/accomplish' },
-    { name: 'Class Schedule', href: '/schedule' },
+    { name: 'Schedule', href: 'school/view-schedule' },
     { name: 'Grade Viewer', href: 'school/grade' },
     { name: 'Announcement', href: 'school/announcement' },
     { name: 'Learning material', href: '/learning-material' },
-    { name: 'Syllabus', href: '/syllabus' },
+    { name: 'Learning material', href: '/school/delegates' },
+
+    // { name: 'Syllabus', href: '/school/syllabus' },
 
 
 
