@@ -106,6 +106,25 @@ export interface ScheduleGrid {
     };
 }
 
+export interface CalendarEvent {
+    id: number;
+    title: string;
+    description?: string;
+    event_date: string;
+    event_type: 'holiday' | 'academic' | 'sports' | 'general';
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface Accomplishment {
+    id: number;
+    title: string;
+    description: string;
+    type: string;
+    photos: string[];
+    created_at: string;
+}
+
 export interface PaginationData<T> {
     data: T[];
     links: Array<{

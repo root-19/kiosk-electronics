@@ -11,6 +11,8 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\DelegateController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\AccomplishmentController;
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
@@ -23,9 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::get('/accomplish', function () {
-        return Inertia::render('Accomplish');
-    })->name('accomplish');
+    Route::get('/accomplish', [AccomplishmentController::class, 'index'])->name('accomplish');
+    Route::post('/accomplish', [AccomplishmentController::class, 'store'])->name('accomplish.store');
 
     Route::get('/announcements', [AnnouncementController::class, 'index'])
         ->name('announcements');
@@ -39,9 +40,9 @@ Route::get('/gradeviewer', [GradeViewerController::class, 'index'])->name('grade
 Route::post('/grade-viewer', [GradeViewerController::class, 'store'])->name('grade-viewer.store');
 Route::post('/grade-viewer/update-grade', [GradeViewerController::class, 'updateGrade'])->name('grade-viewer.update');
 
-    Route::get('/calendar', function () {
-        return Inertia::render('Calendar');
-    })->name('calendar.index');
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+
+    Route::post('/calendar/events', [CalendarController::class, 'store'])->name('calendar.events.store');
 
 
     Route::get('/orientation', function () {
@@ -91,6 +92,9 @@ Route::get('/school/syllabus', [SyllabusController::class, 'schoolView'])->name(
 Route::get('/school/view-schedule', [ScheduleController::class, 'schoolViewSchedule'])->name('school.view-schedule');
 Route::get('/school/delegates', [SportController::class, 'kioskIndex'])->name('school.delegates');
 Route::get('/school/sports/{id}', [SportController::class, 'kioskShow'])->name('school.sports.show');
+Route::get('/school/calendar', [CalendarController::class, 'index'])->name('school.calendar');
+Route::post('/school/calendar/events', [CalendarController::class, 'store'])->name('school.calendar.events.store');
+Route::get('/school/accomplish', [AccomplishmentController::class, 'schoolView'])->name('school.accomplish');
 
 // Test route to verify school syllabus is accessible
 Route::get('/test/school-syllabus', function () {

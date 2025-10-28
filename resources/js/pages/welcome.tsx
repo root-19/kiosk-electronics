@@ -9,14 +9,14 @@ const routes = [
     // { name: 'Register', href: register().url },
     // { name: 'Dashboard', href: dashboard().url },
     // { name: 'Home', href: home().url },
-    { name: 'Calendar Product', href: '/school/calendar' },
+    { name: 'School Calendar', href: '/school/calendar' },
     { name: 'ICT Orientation', href: '/orientation' },
-    { name: 'Program Accomplish', href: '/accomplish' },
+    { name: 'Program Accomplish', href: '/school/accomplish' },
     { name: 'Schedule', href: 'school/view-schedule' },
     { name: 'Grade Viewer', href: 'school/grade' },
     { name: 'Announcement', href: 'school/announcement' },
     { name: 'Learning material', href: '/learning-material' },
-    { name: 'Learning material', href: '/school/delegates' },
+    { name: 'Delegates', href: '/school/delegates' },
 
     // { name: 'Syllabus', href: '/school/syllabus' },
 

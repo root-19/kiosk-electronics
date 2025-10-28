@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('delegates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('sport_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('position')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }
