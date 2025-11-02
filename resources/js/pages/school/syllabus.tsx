@@ -1,5 +1,5 @@
 import { Head, usePage, Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KioskKeyboard from '@/components/kiosk-keyboard';
 
 type Syllabus = {
@@ -24,6 +24,8 @@ export default function SchoolSyllabus() {
   const [previewError, setPreviewError] = useState(false);
   const [currentPreviewUrl, setCurrentPreviewUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const PAGE_SIZE = 9;
+  const [page, setPage] = useState(1);
 
   // Filter syllabi by file name and only show DOC/PDF files
   const filtered = allSyllabi.filter((s) => {
@@ -38,13 +40,24 @@ export default function SchoolSyllabus() {
     return isDocOrPdf && matchesSearch;
   });
 
-  // Group by grade level
-  const grouped = filtered.reduce((acc: Record<string, Syllabus[]>, s) => {
-    const level = s.grade_level || 'Others';
-    if (!acc[level]) acc[level] = [];
-    acc[level].push(s);
-    return acc;
-  }, {});
+  // Pagination helpers
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(startIndex, startIndex + PAGE_SIZE);
+
+  // Keep page in range and reset on search/filter changes
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(1);
+    }
+  }, [totalPages]);
+  
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+
+  // Auto-open first available document (prefer PDF) on load
+  // Do not auto-open previews; user will pick a file to view from the grid
 
   const handleSearchFocus = () => {
     setShowKeyboard(true);
@@ -201,19 +214,15 @@ export default function SchoolSyllabus() {
             </div>
           </div>
 
-          {/* Render per Grade Level */}
-          {Object.keys(grouped).length > 0 ? (
-            Object.keys(grouped).map((level) => (
-              <div key={level} className="mb-10">
-                <h2 className="text-3xl font-bold text-blue-600 dark:text-blue-300 mb-4">
-                  {level}
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {grouped[level].map((syllabus) => (
-                    <div
-                      key={syllabus.id}
-                      className="bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200 hover:border-blue-400 dark:hover:border-blue-500"
-                    >
+          {/* Grid - Paginated (thumbnails/cards) */}
+          {pageItems.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pageItems.map((syllabus) => (
+                  <div
+                    key={syllabus.id}
+                    className="bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200 hover:border-blue-400 dark:hover:border-blue-500"
+                  >
                       {/* File Icon and Type */}
                       <div className="flex items-center gap-3 mb-4">
                         <span className="text-3xl">{getFileIcon(syllabus.file_type)}</span>
@@ -283,10 +292,12 @@ export default function SchoolSyllabus() {
                         View Document
                       </button>
                     </div>
-                  ))}
-                </div>
+                ))}
               </div>
-            ))
+
+              {/* Hint: tap a card to preview the file */}
+              <div className="mt-6 text-center text-gray-500 dark:text-gray-400">Tap a document card above to preview</div>
+            </>
           ) : (
             <div className="text-center py-16">
               <div className="text-6xl mb-4">📚</div>
@@ -303,7 +314,7 @@ export default function SchoolSyllabus() {
           {filtered.length > 0 && (
             <div className="mt-8 text-center">
               <p className="text-lg text-gray-600 dark:text-gray-400">
-                Showing {filtered.length} document{filtered.length !== 1 ? 's' : ''} 
+                Showing {startIndex + 1}-{Math.min(startIndex + PAGE_SIZE, filtered.length)} of {filtered.length} document{filtered.length !== 1 ? 's' : ''}
                 {search && ` matching "${search}"`}
               </p>
             </div>

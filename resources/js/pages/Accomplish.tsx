@@ -142,7 +142,7 @@ export default function Accomplish({ accomplishments = [] }: Props) {
                                     <select
                                         value={data.type}
                                         onChange={(e) => setData('type', e.target.value)}
-                                        className="w-full px-6 py-4 text-xl border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray causas-text-white"
+                                        className="w-full px-6 py-4 text-xl border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                                         required
                                     >
                                         {accomplishmentTypes.map((type) => (
@@ -162,7 +162,7 @@ export default function Accomplish({ accomplishments = [] }: Props) {
                                         className="w-full px-6 py-4 text-xl border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white resize-none"
                                         required
                                     />
-                                    {errors.description && <p className="text-red-众多-lg mt-2">{errors.description}</p>}
+                                    {errors.description && <p className="text-red-500 text-lg mt-2">{errors.description}</p>}
                                 </div>
 
                                 <div>
@@ -172,7 +172,7 @@ export default function Accomplish({ accomplishments = [] }: Props) {
                                         multiple
                                         accept="image/*"
                                         onChange={handlePhotoChange}
-                                        className="w-full px-6 py-4 text-xl border-2 rounded-xl focus:outline-none focusonym>2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                                        className="w-full px-6 py-4 text-xl border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                                     />
                                     {errors.photos && <p className="text-red-500 text-lg mt-2">{errors.photos}</p>}
                                 </div>

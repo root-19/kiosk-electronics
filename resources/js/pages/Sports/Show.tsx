@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Head, useForm, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
+import { Head, useForm, router, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -133,36 +132,56 @@ export default function SportShow({ sport }: SportShowProps) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title={`${sport.name} Delegates`} />
 
-            <div className="p-6 space-y-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => router.get('/delegates')}
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6 relative">
+                {/* Back Button */}
+                <div className="absolute top-4 left-4 z-20">
+                    <Link
+                        href="/school/delegates"
+                        className="inline-flex items-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all duration-200 hover:scale-105 active:scale-95 text-lg"
+                    >
+                        <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
                         >
-                            <ArrowLeft className="w-4 h-4" />
-                        </Button>
-                        <div>
-                            <h1 className="text-3xl font-bold flex items-center gap-2">
-                                <Trophy className="w-8 h-8" />
-                                {sport.name}
-                            </h1>
-                            <p className="text-muted-foreground mt-1">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 19l-7-7 7-7"
+                            />
+                        </svg>
+                        Back
+                    </Link>
+                </div>
+
+                <div className="max-w-7xl mx-auto py-8 space-y-6">
+                    <div className="flex items-center justify-center mb-8">
+                        <div className="text-center">
+                            <div className="flex items-center justify-center gap-4 mb-4">
+                                <Trophy className="w-16 h-16 text-blue-600 dark:text-blue-400" />
+                                <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white">
+                                    {sport.name}
+                                </h1>
+                            </div>
+                            <p className="text-2xl text-gray-600 dark:text-gray-400">
                                 {sport.description || 'No description'}
                             </p>
                         </div>
                     </div>
-                    <Dialog open={showAddDelegateDialog} onOpenChange={setShowAddDelegateDialog}>
-                        <DialogTrigger asChild>
-                            <Button onClick={openAddDelegateDialog}>
-                                <Plus className="w-4 h-4 mr-2" />
-                                Add Delegate
-                            </Button>
-                        </DialogTrigger>
+                    <div className="flex justify-center mb-8">
+                        <Dialog open={showAddDelegateDialog} onOpenChange={setShowAddDelegateDialog}>
+                            <DialogTrigger asChild>
+                                <Button onClick={openAddDelegateDialog} className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-6 py-3">
+                                    <Plus className="w-5 h-5 mr-2" />
+                                    Add Delegate
+                                </Button>
+                            </DialogTrigger>
                         <DialogContent className="max-w-md">
                             <form onSubmit={editingDelegate ? handleEditDelegate : handleAddDelegate}>
                                 <DialogHeader>
@@ -235,26 +254,31 @@ export default function SportShow({ sport }: SportShowProps) {
                                             delegateForm.reset();
                                             setImagePreview(null);
                                         }}
+                                        className="border-gray-300 hover:bg-gray-100"
                                     >
                                         Cancel
                                     </Button>
-                                    <Button type="submit" disabled={delegateForm.processing}>
+                                    <Button 
+                                        type="submit" 
+                                        disabled={delegateForm.processing}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    >
                                         {delegateForm.processing ? 'Saving...' : editingDelegate ? 'Update' : 'Add Delegate'}
                                     </Button>
                                 </DialogFooter>
                             </form>
                         </DialogContent>
                     </Dialog>
-                </div>
+                    </div>
 
                 {sport.delegates.length === 0 ? (
-                    <Card>
+                    <Card className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
                         <CardContent className="flex flex-col items-center justify-center py-16">
-                            <User className="w-16 h-16 text-muted-foreground mb-4" />
-                            <h3 className="text-xl font-semibold mb-2">No Delegates Yet</h3>
-                            <p className="text-muted-foreground mb-4">Get started by adding your first delegate</p>
-                            <Button onClick={openAddDelegateDialog}>
-                                <Plus className="w-4 h-4 mr-2" />
+                            <User className="w-20 h-20 text-gray-400 dark:text-gray-500 mb-4" />
+                            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">No Delegates Yet</h3>
+                            <p className="text-2xl text-gray-600 dark:text-gray-400 mb-6">Get started by adding your first delegate</p>
+                            <Button onClick={openAddDelegateDialog} className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-6 py-3">
+                                <Plus className="w-5 h-5 mr-2" />
                                 Add Delegate
                             </Button>
                         </CardContent>
@@ -262,9 +286,9 @@ export default function SportShow({ sport }: SportShowProps) {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {sport.delegates.map((delegate) => (
-                            <Card key={delegate.id} className="hover:shadow-lg transition-shadow">
+                            <Card key={delegate.id} className="hover:shadow-2xl transition-all duration-300 transform hover:scale-105 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border-4 border-gray-200 dark:border-gray-700">
                                 <CardHeader className="pb-3">
-                                    <div className="aspect-square relative rounded-lg overflow-hidden bg-muted mb-3">
+                                    <div className="aspect-square relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 mb-4">
                                         {delegate.image_path ? (
                                             <img 
                                                 src={`/storage/${delegate.image_path}`} 
@@ -273,13 +297,13 @@ export default function SportShow({ sport }: SportShowProps) {
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
-                                                <User className="w-16 h-16 text-muted-foreground" />
+                                                <User className="w-20 h-20 text-gray-400 dark:text-gray-500" />
                                             </div>
                                         )}
                                     </div>
-                                    <CardTitle className="text-lg">{delegate.name}</CardTitle>
+                                    <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white text-center">{delegate.name}</CardTitle>
                                     {delegate.position && (
-                                        <CardDescription>{delegate.position}</CardDescription>
+                                        <CardDescription className="text-xl text-gray-600 dark:text-gray-400 text-center">{delegate.position}</CardDescription>
                                     )}
                                 </CardHeader>
                                 <CardContent>
@@ -287,7 +311,7 @@ export default function SportShow({ sport }: SportShowProps) {
                                         <Button 
                                             variant="outline" 
                                             size="sm" 
-                                            className="flex-1"
+                                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white border-0"
                                             onClick={() => openEditDelegateDialog(delegate)}
                                         >
                                             <Edit className="w-4 h-4 mr-1" />
@@ -306,8 +330,9 @@ export default function SportShow({ sport }: SportShowProps) {
                         ))}
                     </div>
                 )}
+                </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
 

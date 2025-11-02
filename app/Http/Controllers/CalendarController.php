@@ -31,6 +31,26 @@ class CalendarController extends Controller
         ]);
     }
 
+ 
+    public function schoolIndex()
+    {
+        $events = Calendar::where('is_active', true)
+            ->orderBy('event_date', 'asc')
+            ->get();
+
+        return Inertia::render('school/calendar', [
+            'events' => $events->map(function ($event) {
+                return [
+                    'id' => $event->id,
+                    'title' => $event->title,
+                    'description' => $event->description,
+                    'event_date' => $event->event_date->format('Y-m-d'),
+                    'event_type' => $event->event_type,
+                ];
+            }),
+        ]);
+    }
+
     /**
      * Store a new calendar event
      */

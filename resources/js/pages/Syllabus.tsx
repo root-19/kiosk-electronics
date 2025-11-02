@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, Download, Trash2, Eye, EyeOff, FileText, File } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { syllabus } from '@/routes';
+import syllabus from '@/routes/syllabus';
 
 interface SyllabusFile {
     id: number;
@@ -41,10 +41,11 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
         subject: '',
         grade_level: '',
         file: null as File | null,
+        category: 'syllabus' as 'syllabus' | 'learning',
     });
 
     const handleFileSelect = (file: File) => {
-        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        const allowedTypes = ['application/pdf'];
         const maxSize = 10 * 1024 * 1024; // 10MB
 
         if (!allowedTypes.includes(file.type)) {
@@ -94,10 +95,10 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
 
     const formatFileSize = (bytes: number) => {
         if (bytes === 0) return '0 Bytes';
-        const k = 1024;
+        const keys = 1024;
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        const instance = Math.floor(Math.log(bytes) / Math.log(keys));
+        return parseFloat((bytes / Math.pow(keys, instance)).toFixed(2)) + ' ' + sizes[instance];
     };
 
     const getFileIcon = (fileType: string) => {
@@ -209,7 +210,7 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
                                                 >
                                                     <input
                                                         type="file"
-                                                        accept=".pdf,.doc,.docx"
+                                                        accept=".pdf"
                                                         onChange={(e) => e.target.files && handleFileSelect(e.target.files[0])}
                                                         className="hidden"
                                                         id="file-upload"
@@ -231,9 +232,7 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
                                                                 <p className="text-sm text-gray-600">
                                                                     Drag and drop your file here, or click to select
                                                                 </p>
-                                                                <p className="text-xs text-gray-500">
-                                                                    PDF, DOC, DOCX (max 10MB)
-                                                                </p>
+                                                                <p className="text-xs text-gray-500">PDF (max 10MB)</p>
                                                             </div>
                                                         )}
                                                     </label>
@@ -269,40 +268,40 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
                             )}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {syllabi.map((syllabus) => (
-                                    <Card key={syllabus.id} className="hover:shadow-lg transition-shadow">
+                                {syllabi.map((item) => (
+                                    <Card key={item.id} className="hover:shadow-lg transition-shadow">
                                         <CardHeader className="pb-3">
                                             <div className="flex items-start justify-between">
                                                 <div className="flex items-center space-x-2">
-                                                    {getFileIcon(syllabus.file_type)}
+                                                    {getFileIcon(item.file_type)}
                                                     <div>
-                                                        <CardTitle className="text-lg">{syllabus.title}</CardTitle>
-                                                        {syllabus.subject && (
+                                                        <CardTitle className="text-lg">{item.title}</CardTitle>
+                                                        {item.subject && (
                                                             <Badge variant="secondary" className="mt-1">
-                                                                {syllabus.subject}
+                                                                {item.subject}
                                                             </Badge>
                                                         )}
                                                     </div>
                                                 </div>
-                                                <Badge variant={syllabus.is_active ? "default" : "secondary"}>
-                                                    {syllabus.is_active ? "Active" : "Inactive"}
+                                                <Badge variant={item.is_active ? "default" : "secondary"}>
+                                                    {item.is_active ? "Active" : "Inactive"}
                                                 </Badge>
                                             </div>
                                         </CardHeader>
                                         <CardContent className="pt-0">
-                                            {syllabus.description && (
+                                            {item.description && (
                                                 <p className="text-sm text-gray-600 mb-3">
-                                                    {syllabus.description}
+                                                    {item.description}
                                                 </p>
                                             )}
                                             
                                             <div className="space-y-2 text-sm text-gray-500">
-                                                <p><strong>File:</strong> {syllabus.file_name}</p>
-                                                <p><strong>Size:</strong> {formatFileSize(syllabus.file_size)}</p>
-                                                {syllabus.grade_level && (
-                                                    <p><strong>Level:</strong> {syllabus.grade_level}</p>
+                                                <p><strong>File:</strong> {item.file_name}</p>
+                                                <p><strong>Size:</strong> {formatFileSize(item.file_size)}</p>
+                                                {item.grade_level && (
+                                                    <p><strong>Level:</strong> {item.grade_level}</p>
                                                 )}
-                                                <p><strong>Uploaded:</strong> {new Date(syllabus.created_at).toLocaleDateString()}</p>
+                                                <p><strong>Uploaded:</strong> {new Date(item.created_at).toLocaleDateString()}</p>
                                             </div>
 
                                             <div className="flex justify-between items-center mt-4 pt-3 border-t">
@@ -311,7 +310,7 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
                                                     variant="outline"
                                                     size="sm"
                                                 >
-                                                    <a href={`/syllabus/${syllabus.id}/download`}>
+                                                    <a href={syllabus.download(item.id).url}>
                                                         <Download className="h-4 w-4 mr-1" />
                                                         Download
                                                     </a>
@@ -321,12 +320,9 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
-                                                        onClick={() => {
-                                                            // Toggle active status
-                                                            window.location.href = `/syllabus/${syllabus.id}/toggle`;
-                                                        }}
+                                                        onClick={() => router.patch(syllabus.toggle(item.id).url)}
                                                     >
-                                                        {syllabus.is_active ? (
+                                                        {item.is_active ? (
                                                             <EyeOff className="h-4 w-4" />
                                                         ) : (
                                                             <Eye className="h-4 w-4" />
@@ -337,7 +333,7 @@ export default function Syllabus({ syllabi }: SyllabusProps) {
                                                         size="sm"
                                                         onClick={() => {
                                                             if (confirm('Are you sure you want to delete this syllabus?')) {
-                                                                window.location.href = `/syllabus/${syllabus.id}`;
+                                                                router.delete(syllabus.destroy(item.id).url);
                                                             }
                                                         }}
                                                         className="text-red-600 hover:text-red-700"

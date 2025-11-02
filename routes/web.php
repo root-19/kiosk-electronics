@@ -92,9 +92,10 @@ Route::get('/school/syllabus', [SyllabusController::class, 'schoolView'])->name(
 Route::get('/school/view-schedule', [ScheduleController::class, 'schoolViewSchedule'])->name('school.view-schedule');
 Route::get('/school/delegates', [SportController::class, 'kioskIndex'])->name('school.delegates');
 Route::get('/school/sports/{id}', [SportController::class, 'kioskShow'])->name('school.sports.show');
-Route::get('/school/calendar', [CalendarController::class, 'index'])->name('school.calendar');
+Route::get('/school/calendar', [CalendarController::class, 'schoolIndex'])->name('school.calendar');
 Route::post('/school/calendar/events', [CalendarController::class, 'store'])->name('school.calendar.events.store');
 Route::get('/school/accomplish', [AccomplishmentController::class, 'schoolView'])->name('school.accomplish');
+Route::get('/school/learning', [SyllabusController::class, 'schoolLearning'])->name('school.learning');
 
 // Test route to verify school syllabus is accessible
 Route::get('/test/school-syllabus', function () {

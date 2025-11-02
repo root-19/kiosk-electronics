@@ -18,6 +18,7 @@ class Syllabus extends Model
         'file_size',
         'subject',
         'grade_level',
+        'category',
         'is_active'
     ];
 

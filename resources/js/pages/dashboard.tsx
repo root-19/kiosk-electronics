@@ -1,5 +1,9 @@
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
+import syllabus from '@/routes/syllabus';
+import delegates from '@/routes/delegates';
+import learning from '@/routes/learning';
+
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import {
@@ -27,9 +31,11 @@ const sections = [
   { title: 'Calendar', description: 'View events & schedules.', icon: Calendar, href: '/calendar' },
   { title: 'GradeViewer', description: 'Check your grades.', icon: GraduationCap, href: '/gradeviewer' },
   { title: 'Orientation', description: 'Start with resources.', icon: Compass, href: '/orientation' },
-  { title: 'Learning', description: 'Access learning modules.', icon: BookOpen, href: '/learning' },
+  { title: 'Learning', description: 'Access learning modules.', icon: BookOpen, href: learning.index().url },
   { title: 'Schedule', description: 'See your class timetable.', icon: Clock, href: '/schedule' },
-  { title: 'Gelegates', description: 'See teh delegates ICCAAC Delegates.', icon: Trophy, href: '/delegates' },
+  { title: 'Delegates', description: 'See the ICCAAC Delegates.', icon: Trophy, href: delegates.index().url },
+  { title: 'Syllabus', description: 'Review course outlines.', icon: FileText, href: syllabus.index().url },
+
 
   // { title: 'Syllabus', description: 'Review course outlines.', icon: FileText, href: syllabus.index().url },
 ];

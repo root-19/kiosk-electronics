@@ -11,7 +11,9 @@ class SyllabusController extends Controller
 {
     public function index()
     {
+        // Show only items categorized as syllabus
         $syllabi = Syllabus::where('is_active', true)
+            ->where('category', 'syllabus')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -27,6 +29,7 @@ class SyllabusController extends Controller
             'description' => 'nullable|string',
             'subject' => 'nullable|string|max:255',
             'grade_level' => 'nullable|string|max:255',
+            'category' => 'nullable|in:syllabus,learning',
             'file' => 'required|file|mimes:pdf,doc,docx|max:10240', // 10MB max
         ]);
 
@@ -39,10 +42,12 @@ class SyllabusController extends Controller
             'description' => $request->description,
             'subject' => $request->subject,
             'grade_level' => $request->grade_level,
+            'category' => $request->input('category', 'syllabus'),
             'file_name' => $file->getClientOriginalName(),
             'file_path' => $filePath,
             'file_type' => $file->getClientMimeType(),
             'file_size' => $file->getSize(),
+            'is_active' => true,
         ]);
 
         return redirect()->route('syllabus.index')->with('success', 'Syllabus uploaded successfully!');
@@ -85,13 +90,30 @@ class SyllabusController extends Controller
     public function schoolView()
     {
         try {
+            // Public syllabus page shows items explicitly categorized as syllabus
             $syllabi = Syllabus::where('is_active', true)
-                ->whereIn('file_type', ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                ->where('category', 'syllabus')
                 ->orderBy('created_at', 'desc')
                 ->get();
 
             return Inertia::render('school/syllabus', [
                 'syllabi' => $syllabi
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function schoolLearning()
+    {
+        try {
+            // Public learning page shows items categorized as learning
+            $docs = Syllabus::where('category', 'learning')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return Inertia::render('school/learning', [
+                'docs' => $docs,
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

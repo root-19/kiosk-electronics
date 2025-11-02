@@ -15,8 +15,10 @@ const routes = [
     { name: 'Schedule', href: 'school/view-schedule' },
     { name: 'Grade Viewer', href: 'school/grade' },
     { name: 'Announcement', href: 'school/announcement' },
-    { name: 'Learning material', href: '/learning-material' },
+    { name: 'Learning material', href: '/school/learning' },
     { name: 'Delegates', href: '/school/delegates' },
+    { name: 'Syllabus', href: '/school/syllabus' },
+
 
     // { name: 'Syllabus', href: '/school/syllabus' },
 
