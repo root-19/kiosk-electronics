@@ -3,23 +3,35 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import { PaginationData, Professor } from '@/types';
+import { PaginationData, Professor, BreadcrumbItem } from '@/types';
+import AppLayout from '@/layouts/app-layout';
 
 interface ProfessorsIndexProps {
     professors: PaginationData<Professor>;
 }
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/dashboard',
+    },
+    {
+        title: 'Professors',
+        href: '/professors',
+    },
+];
+
 export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
     const handleDelete = (professor: Professor) => {
         if (confirm(`Are you sure you want to delete professor "${professor.full_name}"?`)) {
-            router.delete(route('professors.destroy', professor.id));
+            router.delete(`/professors/${professor.id}`);
         }
     };
 
     return (
-        <>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Professors" />
-            <div className="space-y-6">
+            <div className="flex h-full flex-1 flex-col gap-8 p-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Professors</h1>
@@ -27,7 +39,7 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                             Manage faculty members and their information
                         </p>
                     </div>
-                    <Link href={route('professors.create')}>
+                    <Link href="/professors/create">
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Add Professor
@@ -70,13 +82,13 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                                 </div>
                                 
                                 <div className="flex items-center gap-2 mt-4">
-                                    <Link href={route('professors.show', professor.id)}>
+                                    <Link href={`/professors/${professor.id}`}>
                                         <Button variant="outline" size="sm">
                                             <Eye className="mr-1 h-3 w-3" />
                                             View
                                         </Button>
                                     </Link>
-                                    <Link href={route('professors.edit', professor.id)}>
+                                    <Link href={`/professors/${professor.id}/edit`}>
                                         <Button variant="outline" size="sm">
                                             <Edit className="mr-1 h-3 w-3" />
                                             Edit
@@ -105,7 +117,7 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                                 <p className="text-muted-foreground mb-4">
                                     Get started by adding your first professor
                                 </p>
-                                <Link href={route('professors.create')}>
+                                <Link href="/professors/create">
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
                                         Add Professor
@@ -137,6 +149,6 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                     </div>
                 )}
             </div>
-        </>
+        </AppLayout>
     );
 }

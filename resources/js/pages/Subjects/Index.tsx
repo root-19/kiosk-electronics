@@ -3,23 +3,35 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import { PaginationData, Subject } from '@/types';
+import { PaginationData, Subject, BreadcrumbItem } from '@/types';
+import AppLayout from '@/layouts/app-layout';
 
 interface SubjectsIndexProps {
     subjects: PaginationData<Subject>;
 }
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/dashboard',
+    },
+    {
+        title: 'Subjects',
+        href: '/subjects',
+    },
+];
+
 export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
     const handleDelete = (subject: Subject) => {
         if (confirm(`Are you sure you want to delete subject "${subject.name}"?`)) {
-            router.delete(route('subjects.destroy', subject.id));
+            router.delete(`/subjects/${subject.id}`);
         }
     };
 
     return (
-        <>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Subjects" />
-            <div className="space-y-6">
+            <div className="flex h-full flex-1 flex-col gap-8 p-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Subjects</h1>
@@ -27,7 +39,7 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                             Manage academic subjects and their details
                         </p>
                     </div>
-                    <Link href={route('subjects.create')}>
+                    <Link href="/subjects/create">
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Add Subject
@@ -70,13 +82,13 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                                 </div>
                                 
                                 <div className="flex items-center gap-2 mt-4">
-                                    <Link href={route('subjects.show', subject.id)}>
+                                    <Link href={`/subjects/${subject.id}`}>
                                         <Button variant="outline" size="sm">
                                             <Eye className="mr-1 h-3 w-3" />
                                             View
                                         </Button>
                                     </Link>
-                                    <Link href={route('subjects.edit', subject.id)}>
+                                    <Link href={`/subjects/${subject.id}/edit`}>
                                         <Button variant="outline" size="sm">
                                             <Edit className="mr-1 h-3 w-3" />
                                             Edit
@@ -105,7 +117,7 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                                 <p className="text-muted-foreground mb-4">
                                     Get started by adding your first subject
                                 </p>
-                                <Link href={route('subjects.create')}>
+                                <Link href="/subjects/create">
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
                                         Add Subject
@@ -137,6 +149,6 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                     </div>
                 )}
             </div>
-        </>
+        </AppLayout>
     );
 }

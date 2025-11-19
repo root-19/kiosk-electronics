@@ -10,7 +10,7 @@ const routes = [
     // { name: 'Dashboard', href: dashboard().url },
     // { name: 'Home', href: home().url },
     { name: 'School Calendar', href: '/school/calendar' },
-    { name: 'ICT Orientation', href: '/orientation' },
+    // { name: 'ICT Orientation', href: '/orientation' },
     { name: 'Program Accomplish', href: '/school/accomplish' },
     { name: 'Schedule', href: 'school/view-schedule' },
     { name: 'Grade Viewer', href: 'school/grade' },
