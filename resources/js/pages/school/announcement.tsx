@@ -6,6 +6,7 @@ type Announcement = {
   title: string;
   content: string;
   published_at: string | null;
+  image_path?: string | null;
 };
 
 type Props = {
@@ -121,6 +122,17 @@ export default function SchoolAnnouncement({ announcement = [] }: Props) {
 
         {/* Announcement Card */}
        <div className="relative bg-white dark:bg-gray-800 p-12 rounded-2xl shadow-2xl border-4 border-gray-200 dark:border-gray-700 max-w-5xl w-full">
+  {/* Image */}
+  {current.image_path && (
+    <div className="mb-8 rounded-xl overflow-hidden">
+      <img 
+        src={`/storage/${current.image_path}`} 
+        alt={current.title}
+        className="w-full h-[400px] object-cover"
+      />
+    </div>
+  )}
+
   {/* Title and Content */}
   <h1 className="text-6xl font-extrabold text-gray-900 dark:text-white mb-8 text-center">
     {current.title}

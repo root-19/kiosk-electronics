@@ -53,12 +53,18 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboard()} prefetch>
-                                <AppLogo />
+                               <AppLogo />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
+
+
+
+
+
+
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
@@ -72,12 +78,12 @@ export function AppSidebar() {
                                 return (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton
-                                            asChild
-                                            tooltip={{ children: item.title }}
-                                        >
-                                            <Link href={href} prefetch>
-                                                {item.icon && <item.icon className="w-4 h-4 mr-2" />}
-                                                <span>{item.title}</span>
+                                                   asChild
+                                                      tooltip={{ children: item.title }}
+                                                             >
+                                                           <Link href={href} prefetch>
+                                                   {item.icon && <item.icon className="w-4 h-4 mr-2" />}
+                                                  <span>{item.title}</span>
                                             </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>

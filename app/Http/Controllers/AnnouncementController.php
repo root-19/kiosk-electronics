@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AnnouncementController extends Controller
 {
@@ -24,9 +25,23 @@ class AnnouncementController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'published_at' => 'nullable|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
         ]);
 
-        Announcement::create($request->all());
+        $imagePath = null;
+        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imagePath = $image->storeAs('announcements', $imageName, 'public');
+        }
+
+        Announcement::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'published_at' => $request->published_at,
+            'image_path' => $imagePath,
+        ]);
 
         return redirect()->route('announcements');
     }

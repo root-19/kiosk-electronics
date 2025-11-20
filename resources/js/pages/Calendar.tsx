@@ -20,6 +20,7 @@ export default function Calendar({ events = [] }: Props) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [showForm, setShowForm] = useState(false);
+    const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -45,6 +46,19 @@ export default function Calendar({ events = [] }: Props) {
     const handleDateClick = (date: Date) => {
         const dateStr = formatDateForComparison(date);
         setSelectedDate(dateStr);
+        setEditingEvent(null);
+        setFormData({ title: '', description: '', event_type: 'general' });
+        setShowForm(true);
+    };
+
+    const handleEditEvent = (event: CalendarEvent) => {
+        setEditingEvent(event);
+        setSelectedDate(event.event_date);
+        setFormData({
+            title: event.title,
+            description: event.description || '',
+            event_type: event.event_type,
+        });
         setShowForm(true);
     };
 
@@ -59,26 +73,44 @@ export default function Calendar({ events = [] }: Props) {
         e.preventDefault();
         if (!selectedDate) return;
 
-        router.post(
-            '/calendar/events',
-            {
-                ...formData,
-                event_date: selectedDate,
-            },
-            {
-                onSuccess: () => {
-                    setShowForm(false);
-                    setFormData({ title: '', description: '', event_type: 'general' });
-                    setSelectedDate(null);
-                },
-            }
-        );
+        const submitData = {
+            ...formData,
+            event_date: selectedDate,
+        };
+
+        if (editingEvent) {
+            router.put(
+                `/calendar/events/${editingEvent.id}`,
+                submitData,
+                {
+                    onSuccess: () => {
+                        setShowForm(false);
+                        setFormData({ title: '', description: '', event_type: 'general' });
+                        setSelectedDate(null);
+                        setEditingEvent(null);
+                    },
+                }
+            );
+        } else {
+            router.post(
+                '/calendar/events',
+                submitData,
+                {
+                    onSuccess: () => {
+                        setShowForm(false);
+                        setFormData({ title: '', description: '', event_type: 'general' });
+                        setSelectedDate(null);
+                    },
+                }
+            );
+        }
     };
 
     const handleCloseForm = () => {
         setShowForm(false);
         setFormData({ title: '', description: '', event_type: 'general' });
         setSelectedDate(null);
+        setEditingEvent(null);
     };
 
     const getDaysInMonth = () => {
@@ -260,6 +292,12 @@ export default function Calendar({ events = [] }: Props) {
                                                     )}
                                                 </p>
                                             </div>
+                                            <button
+                                                onClick={() => handleEditEvent(event)}
+                                                className="px-6 py-3 bg-blue-600 text-white rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all duration-200 shadow-lg hover:scale-105"
+                                            >
+                                                Edit
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
@@ -286,7 +324,7 @@ export default function Calendar({ events = [] }: Props) {
                                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                             >
                                 <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                                    Add Event
+                                    {editingEvent ? 'Edit Event' : 'Add Event'}
                                 </h2>
                                 <p className="text-2xl text-gray-600 dark:text-gray-400 mb-8">
                                     {new Date(selectedDate).toLocaleDateString('en-US', {
@@ -366,7 +404,7 @@ export default function Calendar({ events = [] }: Props) {
                                             type="submit"
                                             className="flex-1 px-8 py-5 bg-blue-600 text-white rounded-xl text-2xl font-bold hover:bg-blue-700 transition-all duration-200"
                                         >
-                                            Save Event
+                                            {editingEvent ? 'Update Event' : 'Save Event'}
                                         </button>
                                     </div>
                                 </form>

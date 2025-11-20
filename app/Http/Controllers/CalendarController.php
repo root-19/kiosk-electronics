@@ -69,6 +69,23 @@ class CalendarController extends Controller
     }
 
     /**
+     * Update an existing calendar event
+     */
+    public function update(Request $request, Calendar $calendar)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'event_date' => 'required|date',
+            'event_type' => 'required|in:holiday,academic,sports,general',
+        ]);
+
+        $calendar->update($validated);
+
+        return redirect()->back()->with('success', 'Calendar event updated successfully!');
+    }
+
+    /**
      * Get events for a specific month
      */
     public function getEvents(Request $request)

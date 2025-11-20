@@ -8,6 +8,7 @@ type Announcement = {
   title: string;
   content: string;
   published_at: string | null;
+  image_path?: string | null;
 };
 
 export default function Announcements({ announcements = [] }: { announcements: Announcement[] }) {
@@ -15,22 +16,54 @@ export default function Announcements({ announcements = [] }: { announcements: A
   const [activeField, setActiveField] = useState<'title' | 'content' | null>(null);
   const [showForm, setShowForm] = useState(false);
 
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
   const form = useForm({
     title: '',
     content: '',
     published_at: '',
+    image: null as File | null,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     form.post('/announcements', {
+      forceFormData: true,
       onSuccess: () => {
         form.reset();
         setShowForm(false);
         setShowKeyboard(false);
         setActiveField(null);
+        setImagePreview(null);
       },
     });
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      if (!allowedTypes.includes(file.type)) {
+        alert('Please select a valid image file (JPEG, PNG, JPG, or GIF).');
+        return;
+      }
+
+      if (file.size > maxSize) {
+        alert('Image size must be less than 5MB.');
+        return;
+      }
+
+      form.setData('image', file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleFieldFocus = (field: 'title' | 'content') => {
@@ -102,6 +135,37 @@ export default function Announcements({ announcements = [] }: { announcements: A
 
             <div>
               <label className="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
+                Image (Optional)
+              </label>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/jpg,image/gif"
+                onChange={handleImageSelect}
+                className="w-full p-3 border rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+              {imagePreview && (
+                <div className="mt-3 relative">
+                  <img 
+                    src={imagePreview} 
+                    alt="Preview" 
+                    className="w-full h-64 object-cover rounded-md border"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      form.setData('image', null);
+                      setImagePreview(null);
+                    }}
+                    className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
                 Publish Date (Optional)
               </label>
               <input
@@ -127,6 +191,7 @@ export default function Announcements({ announcements = [] }: { announcements: A
           <table className="min-w-full bg-white dark:bg-gray-800 rounded-md shadow-md">
             <thead>
               <tr className="bg-gray-100 dark:bg-gray-700 text-left">
+                <th className="px-4 py-2 font-medium text-gray-700 dark:text-gray-200">Image</th>
                 <th className="px-4 py-2 font-medium text-gray-700 dark:text-gray-200">Title</th>
                 <th className="px-4 py-2 font-medium text-gray-700 dark:text-gray-200">Content</th>
                 <th className="px-4 py-2 font-medium text-gray-700 dark:text-gray-200">Publish Date</th>
@@ -135,7 +200,7 @@ export default function Announcements({ announcements = [] }: { announcements: A
             <tbody>
               {announcements.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="text-center py-4 text-gray-500 dark:text-gray-400">
+                  <td colSpan={4} className="text-center py-4 text-gray-500 dark:text-gray-400">
                     No announcements yet.
                   </td>
                 </tr>
@@ -145,6 +210,17 @@ export default function Announcements({ announcements = [] }: { announcements: A
                     key={item.id}
                     className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
+                    <td className="px-4 py-2">
+                      {item.image_path ? (
+                        <img 
+                          src={`/storage/${item.image_path}`} 
+                          alt={item.title}
+                          className="w-20 h-20 object-cover rounded-md"
+                        />
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </td>
                     <td className="px-4 py-2">{item.title}</td>
                     <td className="px-4 py-2">{item.content}</td>
                     <td className="px-4 py-2">

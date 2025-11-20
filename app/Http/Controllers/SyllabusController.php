@@ -37,18 +37,25 @@ class SyllabusController extends Controller
         $fileName = time() . '_' . $file->getClientOriginalName();
         $filePath = $file->storeAs('syllabi', $fileName, 'public');
 
+        $category = $request->input('category', 'syllabus');
+        
         Syllabus::create([
             'title' => $request->title,
             'description' => $request->description,
             'subject' => $request->subject,
             'grade_level' => $request->grade_level,
-            'category' => $request->input('category', 'syllabus'),
+            'category' => $category,
             'file_name' => $file->getClientOriginalName(),
             'file_path' => $filePath,
             'file_type' => $file->getClientMimeType(),
             'file_size' => $file->getSize(),
             'is_active' => true,
         ]);
+
+        // Redirect based on category
+        if ($category === 'learning') {
+            return redirect()->route('learning.index')->with('success', 'Learning material uploaded successfully!');
+        }
 
         return redirect()->route('syllabus.index')->with('success', 'Syllabus uploaded successfully!');
     }
@@ -102,6 +109,32 @@ class SyllabusController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function learningIndex()
+    {
+        // Admin learning page - shows items categorized as learning
+        $docs = Syllabus::where('category', 'learning')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return Inertia::render('Learning', [
+            'docs' => $docs->map(function ($doc) {
+                return [
+                    'id' => $doc->id,
+                    'title' => $doc->title,
+                    'description' => $doc->description,
+                    'subject' => $doc->subject,
+                    'grade_level' => $doc->grade_level,
+                    'file_name' => $doc->file_name,
+                    'file_path' => $doc->file_path,
+                    'file_type' => $doc->file_type,
+                    'file_size' => $doc->file_size,
+                    'created_at' => $doc->created_at->toISOString(),
+                ];
+            }),
+        ]);
     }
 
     public function schoolLearning()

@@ -26,7 +26,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const sections = [
-  { title: 'Accomplish', description: 'Track completed tasks.', icon: ClipboardCheck, href: '/accomplish' },
+  { title: 'Program Accomplishment', description: 'Track completed tasks.', icon: ClipboardCheck, href: '/accomplish' },
   { title: 'Announcement', description: 'Stay updated with news.', icon: Megaphone, href: '/announcements' },
   { title: 'Calendar', description: 'View events & schedules.', icon: Calendar, href: '/calendar' },
   { title: 'GradeViewer', description: 'Check your grades.', icon: GraduationCap, href: '/gradeviewer' },

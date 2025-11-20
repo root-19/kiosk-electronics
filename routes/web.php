@@ -43,15 +43,14 @@ Route::post('/grade-viewer/update-grade', [GradeViewerController::class, 'update
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
     Route::post('/calendar/events', [CalendarController::class, 'store'])->name('calendar.events.store');
+    Route::put('/calendar/events/{calendar}', [CalendarController::class, 'update'])->name('calendar.events.update');
 
 
     Route::get('/orientation', function () {
         return Inertia::render('Orientation');
     })->name('orientation');
 
-    Route::get('/learning', function () {
-        return Inertia::render('Learning');
-    })->name('learning.index');
+    Route::get('/learning', [SyllabusController::class, 'learningIndex'])->name('learning.index');
 
     Route::get('/view-schedule', [ScheduleController::class, 'viewSchedule'])->name('view-schedule.index');
     Route::get('/schedule', [ScheduleController::class, 'viewSchedule'])->name('schedule.index');
