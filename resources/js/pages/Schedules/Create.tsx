@@ -105,11 +105,14 @@ export default function CreateSchedule({ sections, professors, subjects, timeSlo
                                             <SelectValue placeholder="Select a professor" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {professors.map((professor) => (
-                                                <SelectItem key={professor.id} value={professor.id.toString()}>
-                                                    {professor.full_name} - {professor.employee_id}
-                                                </SelectItem>
-                                            ))}
+                                            {professors.map((professor) => {
+                                                const professorName = professor.full_name || `${professor.first_name} ${professor.last_name}`;
+                                                return (
+                                                    <SelectItem key={professor.id} value={professor.id.toString()}>
+                                                        {professorName}
+                                                    </SelectItem>
+                                                );
+                                            })}
                                         </SelectContent>
                                     </Select>
                                     {errors.professor_id && (

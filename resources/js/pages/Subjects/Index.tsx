@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { PaginationData, Subject, BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 
@@ -28,6 +28,10 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
         }
     };
 
+    const handleAddSubject = () => {
+        router.get('/subjects/create');
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Subjects" />
@@ -39,12 +43,10 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                             Manage academic subjects and their details
                         </p>
                     </div>
-                    <Link href="/subjects/create">
-                        <Button>
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add Subject
-                        </Button>
-                    </Link>
+                    <Button onClick={handleAddSubject}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Subject
+                    </Button>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -82,18 +84,6 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                                 </div>
                                 
                                 <div className="flex items-center gap-2 mt-4">
-                                    <Link href={`/subjects/${subject.id}`}>
-                                        <Button variant="outline" size="sm">
-                                            <Eye className="mr-1 h-3 w-3" />
-                                            View
-                                        </Button>
-                                    </Link>
-                                    <Link href={`/subjects/${subject.id}/edit`}>
-                                        <Button variant="outline" size="sm">
-                                            <Edit className="mr-1 h-3 w-3" />
-                                            Edit
-                                        </Button>
-                                    </Link>
                                     <Button
                                         variant="outline"
                                         size="sm"
@@ -117,12 +107,10 @@ export default function SubjectsIndex({ subjects }: SubjectsIndexProps) {
                                 <p className="text-muted-foreground mb-4">
                                     Get started by adding your first subject
                                 </p>
-                                <Link href="/subjects/create">
-                                    <Button>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Add Subject
-                                    </Button>
-                                </Link>
+                                <Button onClick={handleAddSubject}>
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Add Subject
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { PaginationData, Schedule, BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 
@@ -87,18 +87,6 @@ export default function SchedulesIndex({ schedules }: SchedulesIndexProps) {
                                     </div>
                                     
                                     <div className="flex items-center gap-2">
-                                        <Link href={`/schedules/${schedule.id}`}>
-                                            <Button variant="outline" size="sm">
-                                                <Eye className="mr-1 h-3 w-3" />
-                                                View
-                                            </Button>
-                                        </Link>
-                                        <Link href={`/schedules/${schedule.id}/edit`}>
-                                            <Button variant="outline" size="sm">
-                                                <Edit className="mr-1 h-3 w-3" />
-                                                Edit
-                                            </Button>
-                                        </Link>
                                         <Button
                                             variant="outline"
                                             size="sm"

@@ -2,6 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import syllabus from '@/routes/syllabus';
 import delegates from '@/routes/delegates';
+
 import learning from '@/routes/learning';
 
 import { type BreadcrumbItem } from '@/types';
@@ -28,7 +29,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const sections = [
   { title: 'Program Accomplishment', description: 'Track completed tasks.', icon: ClipboardCheck, href: '/accomplish' },
   { title: 'Announcement', description: 'Stay updated with news.', icon: Megaphone, href: '/announcements' },
-  { title: 'Calendar', description: 'View events & schedules.', icon: Calendar, href: '/calendar' },
+  { title: 'Calendar', description: 'View events & schedules.', icon: Calendar, href: '/calendar'},
   { title: 'GradeViewer', description: 'Check your grades.', icon: GraduationCap, href: '/gradeviewer' },
   { title: 'Orientation', description: 'Start with resources.', icon: Compass, href: '/orientation' },
   { title: 'Learning', description: 'Access learning modules.', icon: BookOpen, href: learning.index().url },

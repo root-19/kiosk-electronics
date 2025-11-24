@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { PaginationData, Professor, BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 
@@ -28,6 +28,16 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
         }
     };
 
+    const handleAddProfessor = () => {
+        router.get('/professors/create');
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'f' || e.key === 'F') {
+            e.preventDefault();
+        }
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Professors" />
@@ -39,12 +49,10 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                             Manage faculty members and their information
                         </p>
                     </div>
-                    <Link href="/professors/create">
-                        <Button>
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add Professor
-                        </Button>
-                    </Link>
+                    <Button onClick={handleAddProfessor} onKeyDown={handleKeyDown}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Professor
+                    </Button>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -82,18 +90,6 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                                 </div>
                                 
                                 <div className="flex items-center gap-2 mt-4">
-                                    <Link href={`/professors/${professor.id}`}>
-                                        <Button variant="outline" size="sm">
-                                            <Eye className="mr-1 h-3 w-3" />
-                                            View
-                                        </Button>
-                                    </Link>
-                                    <Link href={`/professors/${professor.id}/edit`}>
-                                        <Button variant="outline" size="sm">
-                                            <Edit className="mr-1 h-3 w-3" />
-                                            Edit
-                                        </Button>
-                                    </Link>
                                     <Button
                                         variant="outline"
                                         size="sm"
@@ -117,12 +113,10 @@ export default function ProfessorsIndex({ professors }: ProfessorsIndexProps) {
                                 <p className="text-muted-foreground mb-4">
                                     Get started by adding your first professor
                                 </p>
-                                <Link href="/professors/create">
-                                    <Button>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Add Professor
-                                    </Button>
-                                </Link>
+                                <Button onClick={handleAddProfessor} onKeyDown={handleKeyDown}>
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Add Professor
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>
