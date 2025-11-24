@@ -10,13 +10,21 @@ type DocItem = {
   file_size: number;
   subject?: string;
   grade_level?: string;
+  title?: string;
+  description?: string;
   created_at: string;
 };
 
 export default function SchoolLearning() {
   const { props } = usePage<{ docs: DocItem[] }>();
+  // Show all learning materials (PDF, DOC, DOCX)
   const allDocs = (props.docs || []).filter((d) =>
-    d.file_type === 'application/msword' || d.file_type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    d.file_type === 'application/pdf' ||
+    d.file_type === 'application/msword' ||
+    d.file_type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+    d.file_name.toLowerCase().endsWith('.pdf') ||
+    d.file_name.toLowerCase().endsWith('.doc') ||
+    d.file_name.toLowerCase().endsWith('.docx')
   );
 
   const [search, setSearch] = useState("");
@@ -28,10 +36,27 @@ export default function SchoolLearning() {
   const PAGE_SIZE = 9;
   const [page, setPage] = useState(1);
 
+  // Safe date parsing function
+  const safeParseDate = (dateString: string | null | undefined): Date | null => {
+    if (!dateString || typeof dateString !== 'string') return null;
+    const date = new Date(dateString);
+    // Check if date is valid
+    if (isNaN(date.getTime())) return null;
+    return date;
+  };
+
+  const formatDate = (dateString: string | null | undefined): string => {
+    const date = safeParseDate(dateString);
+    if (!date) return 'N/A';
+    return date.toLocaleDateString();
+  };
+
   const filtered = allDocs.filter((d) => {
     const q = search.toLowerCase();
     return (
       d.file_name.toLowerCase().includes(q) ||
+      (d.title && d.title.toLowerCase().includes(q)) ||
+      (d.description && d.description.toLowerCase().includes(q)) ||
       (d.subject && d.subject.toLowerCase().includes(q)) ||
       (d.grade_level && d.grade_level.toLowerCase().includes(q))
     );
@@ -64,8 +89,12 @@ export default function SchoolLearning() {
   const getFileExtension = (fileName: string) => fileName.split('.').pop()?.toUpperCase() || '';
 
   const getFileUrl = (doc: DocItem) => {
+    // For PDF files, use direct URL
+    if (doc.file_type === 'application/pdf' || doc.file_name.toLowerCase().endsWith('.pdf')) {
+      return `/storage/${doc.file_path}`;
+    }
+    // For DOC/DOCX files, use Google Docs viewer
     const fileUrl = encodeURIComponent(`${window.location.origin}/storage/${doc.file_path}`);
-    // Always use Google Docs viewer for learning (doc/docx)
     return `https://docs.google.com/gview?url=${fileUrl}&embedded=true`;
   };
 
@@ -128,7 +157,10 @@ export default function SchoolLearning() {
                         </div>
                       </div>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">{doc.file_name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">{doc.title || doc.file_name}</h3>
+                    {doc.description && (
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 line-clamp-2">{doc.description}</p>
+                    )}
                     {(doc.subject || doc.grade_level) && (
                       <div className="mb-4 space-y-1">
                         {doc.subject && (
@@ -139,7 +171,7 @@ export default function SchoolLearning() {
                         )}
                       </div>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Uploaded: {new Date(doc.created_at).toLocaleDateString()}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Uploaded: {formatDate(doc.created_at)}</p>
                     <button
                       onClick={() => openPreview(doc)}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
@@ -193,7 +225,10 @@ export default function SchoolLearning() {
                 <div className="flex items-center gap-3 flex-1">
                   <span className="text-2xl">📝</span>
                   <div className="flex-1">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{selectedFile.file_name}</h2>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{selectedFile.title || selectedFile.file_name}</h2>
+                    {selectedFile.description && (
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{selectedFile.description}</p>
+                    )}
                     <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                       <span>{getFileExtension(selectedFile.file_name)} • {formatFileSize(selectedFile.file_size)}</span>
                       {selectedFile.subject && (<span>Subject: {selectedFile.subject}</span>)}
@@ -225,8 +260,36 @@ export default function SchoolLearning() {
                   </button>
                 </div>
               </div>
-              <div className="flex-1 p-6">
-                <iframe src={currentPreviewUrl} className="w-full h-full border-0 rounded-lg" title={selectedFile.file_name} onLoad={() => setIsLoading(false)} />
+              <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
+                {selectedFile.file_type === 'application/pdf' || selectedFile.file_name.toLowerCase().endsWith('.pdf') ? (
+                  <div className="w-full h-full">
+                    <iframe
+                      src={`${currentPreviewUrl}#toolbar=0`}
+                      className="w-full h-full border-0 rounded-lg bg-white"
+                      title={selectedFile.file_name}
+                      style={{ minHeight: '600px' }}
+                      onLoad={() => setIsLoading(false)}
+                    />
+                    <p className="text-xs text-gray-500 mt-2 text-center">
+                      If the PDF doesn't display,{' '}
+                      <a
+                        href={currentPreviewUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        click here to open in a new tab
+                      </a>
+                    </p>
+                  </div>
+                ) : (
+                  <iframe
+                    src={currentPreviewUrl}
+                    className="w-full h-full border-0 rounded-lg"
+                    title={selectedFile.file_name}
+                    onLoad={() => setIsLoading(false)}
+                  />
+                )}
               </div>
             </div>
           </div>

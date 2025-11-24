@@ -1,6 +1,6 @@
 import { Head, usePage, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import KioskKeyboard from '@/Components/kiosk-keyboard'; 
+import KioskKeyboard from '@/components/kiosk-keyboard'; 
 
 type GradeViewer = {
   id: number;
@@ -21,6 +21,21 @@ export default function Grade() {
 
   const [search, setSearch] = useState("");
   const [showKeyboard, setShowKeyboard] = useState(false);
+
+  // Safe date parsing function
+  const safeParseDate = (dateString: string | null | undefined): Date | null => {
+    if (!dateString || typeof dateString !== 'string') return null;
+    const date = new Date(dateString);
+    // Check if date is valid
+    if (isNaN(date.getTime())) return null;
+    return date;
+  };
+
+  const formatDate = (dateString: string | null | undefined): string => {
+    const date = safeParseDate(dateString);
+    if (!date) return '-';
+    return date.toLocaleDateString();
+  };
 
   // filter by last name
   const filtered = allGrades.filter((g) =>
@@ -98,7 +113,6 @@ export default function Grade() {
                 value={search}
                 onChange={handleKeyboardInput}
                 onClose={handleKeyboardClose}
-                placeholder="Search by Last Name..."
               />
             )}
           </div>
@@ -133,7 +147,7 @@ export default function Grade() {
                         >
                           <td className="py-3 px-6">{g.id_number}</td>
                           <td className="py-3 px-6 font-bold">{g.last_name}</td>
-                          <td className="py-3 px-6">{g.first_name}</td>
+                          <td className="py-3 px-6">{g.first_name?.toUpperCase() || '-'}</td>
                           <td className="py-3 px-6">{g.middle_name || '-'}</td>
                           <td className="py-3 px-6">{g.extra_name || '-'}</td>
                           <td className="py-3 px-6">{g.program}</td>
@@ -142,9 +156,7 @@ export default function Grade() {
                             {g.grade || '-'}
                           </td>
                           <td className="py-3 px-6 text-center">
-                            {g.date_validated
-                              ? new Date(g.date_validated).toLocaleDateString()
-                              : '-'}
+                            {formatDate(g.date_validated)}
                           </td>
                         </tr>
                       ))}

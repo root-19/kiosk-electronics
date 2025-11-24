@@ -24,13 +24,18 @@ class SyllabusController extends Controller
 
     public function store(Request $request)
     {
+        $category = $request->input('category', 'syllabus');
+        
+        // Learning materials only accept PDF, syllabus accepts PDF, DOC, DOCX
+        $fileMimes = $category === 'learning' ? 'pdf' : 'pdf,doc,docx';
+        
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject' => 'nullable|string|max:255',
             'grade_level' => 'nullable|string|max:255',
             'category' => 'nullable|in:syllabus,learning',
-            'file' => 'required|file|mimes:pdf,doc,docx|max:10240', // 10MB max
+            'file' => 'required|file|mimes:' . $fileMimes . '|max:10240', // 10MB max
         ]);
 
         $file = $request->file('file');
@@ -140,13 +145,27 @@ class SyllabusController extends Controller
     public function schoolLearning()
     {
         try {
-            // Public learning page shows items categorized as learning
+            // Public learning page shows items categorized as learning and is_active
             $docs = Syllabus::where('category', 'learning')
+                ->where('is_active', true)
                 ->orderBy('created_at', 'desc')
                 ->get();
 
             return Inertia::render('school/learning', [
-                'docs' => $docs,
+                'docs' => $docs->map(function ($doc) {
+                    return [
+                        'id' => $doc->id,
+                        'title' => $doc->title,
+                        'description' => $doc->description,
+                        'file_name' => $doc->file_name,
+                        'file_path' => $doc->file_path,
+                        'file_type' => $doc->file_type,
+                        'file_size' => $doc->file_size,
+                        'subject' => $doc->subject,
+                        'grade_level' => $doc->grade_level,
+                        'created_at' => $doc->created_at->toISOString(),
+                    ];
+                }),
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

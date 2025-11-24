@@ -16,6 +16,27 @@ type Props = {
 export default function SchoolAnnouncement({ announcement = [] }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Safe date parsing function
+  const safeParseDate = (dateString: string | null | undefined): Date | null => {
+    if (!dateString || typeof dateString !== 'string') return null;
+    const date = new Date(dateString);
+    // Check if date is valid
+    if (isNaN(date.getTime())) return null;
+    return date;
+  };
+
+  const formatDate = (dateString: string | null | undefined): string => {
+    const date = safeParseDate(dateString);
+    if (!date) return 'N/A';
+    return date.toLocaleDateString();
+  };
+
+  const formatTime = (dateString: string | null | undefined): string => {
+    const date = safeParseDate(dateString);
+    if (!date) return '';
+    return date.toLocaleTimeString();
+  };
+
   const prev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? announcement.length - 1 : prevIndex - 1
@@ -144,8 +165,8 @@ export default function SchoolAnnouncement({ announcement = [] }: Props) {
   {/* Published Date - bottom-left */}
   {current.published_at && (
     <div className="absolute bottom-6 left-6 text-xl text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg">
-      📅 Published: {new Date(current.published_at).toLocaleDateString()}{' '}
-      {new Date(current.published_at).toLocaleTimeString()}
+      📅 Published: {formatDate(current.published_at)}{' '}
+      {formatTime(current.published_at)}
     </div>
   )}
 </div>

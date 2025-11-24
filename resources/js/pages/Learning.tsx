@@ -66,6 +66,11 @@ export default function Learning() {
   });
 
   const getFileUrl = (doc: LearningDoc) => {
+    // For PDF files, use direct URL
+    if (doc.file_type === 'application/pdf' || doc.file_name.toLowerCase().endsWith('.pdf')) {
+      return `/storage/${doc.file_path}`;
+    }
+    // For other file types, use Google Docs viewer
     const fileUrl = encodeURIComponent(`${window.location.origin}/storage/${doc.file_path}`);
     return `https://docs.google.com/gview?url=${fileUrl}&embedded=true`;
   };
@@ -81,20 +86,17 @@ export default function Learning() {
   };
 
   const getFileIcon = (fileType?: string) => {
-    if (!fileType) return <File className="h-8 w-8 text-blue-500" />;
-    if (fileType.includes('word')) return <FileText className="h-8 w-8 text-blue-600" />;
-    return <File className="h-8 w-8 text-blue-500" />;
+    if (!fileType) return <File className="h-8 w-8 text-red-500" />;
+    if (fileType === 'application/pdf') return <FileText className="h-8 w-8 text-red-600" />;
+    return <File className="h-8 w-8 text-red-500" />;
   };
 
   const handleFileSelect = (file: File) => {
-    const allowedTypes = [
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    ];
+    const allowedTypes = ['application/pdf'];
     const maxSize = 10 * 1024 * 1024; // 10MB
 
     if (!allowedTypes.includes(file.type)) {
-      alert('Please select a DOC or DOCX file.');
+      alert('Please select a PDF file only.');
       return;
     }
 
@@ -154,8 +156,8 @@ export default function Learning() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>DOC/DOCX Upload</CardTitle>
-                  <CardDescription>Upload Word documents up to 10MB. These will appear on the school Learning page.</CardDescription>
+                  <CardTitle>PDF Upload</CardTitle>
+                  <CardDescription>Upload PDF documents up to 10MB. These will appear on the school Learning page.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -202,7 +204,7 @@ export default function Learning() {
                       >
                         <input
                           type="file"
-                          accept=".doc,.docx"
+                          accept=".pdf,application/pdf"
                           onChange={(e) => e.target.files && handleFileSelect(e.target.files[0])}
                           className="hidden"
                           id="file-upload"
@@ -218,7 +220,7 @@ export default function Learning() {
                             <div className="space-y-2">
                               <Upload className="h-8 w-8 mx-auto text-gray-400" />
                               <p className="text-sm text-gray-600">Drag and drop your file here, or click to select</p>
-                              <p className="text-xs text-gray-500">DOC, DOCX (max 10MB)</p>
+                              <p className="text-xs text-gray-500">PDF only (max 10MB)</p>
                             </div>
                           )}
                         </label>
@@ -406,12 +408,34 @@ export default function Learning() {
                   </button>
                 </div>
               </div>
-              <div className="flex-1 p-6">
-                <iframe
-                  src={currentPreviewUrl}
-                  className="w-full h-full border-0 rounded-lg"
-                  title={selectedDoc.file_name}
-                />
+              <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
+                {selectedDoc.file_type === 'application/pdf' || selectedDoc.file_name.toLowerCase().endsWith('.pdf') ? (
+                  <div className="w-full h-full">
+                    <iframe
+                      src={`${currentPreviewUrl}#toolbar=0`}
+                      className="w-full h-full border-0 rounded-lg bg-white"
+                      title={selectedDoc.file_name}
+                      style={{ minHeight: '600px' }}
+                    />
+                    <p className="text-xs text-gray-500 mt-2 text-center">
+                      If the PDF doesn't display,{' '}
+                      <a
+                        href={currentPreviewUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        click here to open in a new tab
+                      </a>
+                    </p>
+                  </div>
+                ) : (
+                  <iframe
+                    src={currentPreviewUrl}
+                    className="w-full h-full border-0 rounded-lg"
+                    title={selectedDoc.file_name}
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -110,7 +110,15 @@ Route::get('/storage/{path}', function ($path) {
         abort(404);
     }
     
-    return response()->file($fullPath);
+    $mimeType = mime_content_type($fullPath);
+    if (!$mimeType) {
+        $mimeType = 'application/octet-stream';
+    }
+    
+    return response()->file($fullPath, [
+        'Content-Type' => $mimeType,
+        'Content-Disposition' => 'inline', // Display in browser instead of download
+    ]);
 })->where('path', '.*')->name('storage.public');
 
 // Debug route to check syllabus data

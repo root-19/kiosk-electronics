@@ -27,6 +27,21 @@ export default function SchoolSyllabus() {
   const PAGE_SIZE = 9;
   const [page, setPage] = useState(1);
 
+  // Safe date parsing function
+  const safeParseDate = (dateString: string | null | undefined): Date | null => {
+    if (!dateString || typeof dateString !== 'string') return null;
+    const date = new Date(dateString);
+    // Check if date is valid
+    if (isNaN(date.getTime())) return null;
+    return date;
+  };
+
+  const formatDate = (dateString: string | null | undefined): string => {
+    const date = safeParseDate(dateString);
+    if (!date) return 'N/A';
+    return date.toLocaleDateString();
+  };
+
   // Filter syllabi by file name and only show DOC/PDF files
   const filtered = allSyllabi.filter((s) => {
     const isDocOrPdf = s.file_type === 'application/pdf' || 
@@ -261,7 +276,7 @@ export default function SchoolSyllabus() {
 
                       {/* Upload Date */}
                       <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                        Uploaded: {new Date(syllabus.created_at).toLocaleDateString()}
+                        Uploaded: {formatDate(syllabus.created_at)}
                       </p>
 
                       {/* View Button */}
@@ -294,6 +309,67 @@ export default function SchoolSyllabus() {
                     </div>
                 ))}
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-4">
+                  <button
+                    onClick={() => setPage(prev => Math.max(1, prev - 1))}
+                    disabled={page === 1}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2 ${
+                      page === 1
+                        ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                    Previous
+                  </button>
+                  
+                  <span className="px-4 py-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                    Page {page} of {totalPages}
+                  </span>
+                  
+                  <button
+                    onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={page === totalPages}
+                    className={`px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center gap-2 ${
+                      page === totalPages
+                        ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}
+                  >
+                    Next
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
 
               {/* Hint: tap a card to preview the file */}
               <div className="mt-6 text-center text-gray-500 dark:text-gray-400">Tap a document card above to preview</div>

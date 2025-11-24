@@ -73,6 +73,10 @@ export default function GradeViewer({ grades }: PageProps) {
     if (name === 'level') {
       const numericValue = value.replace(/[^0-9]/g, '');
       setFormData({ ...formData, [name]: numericValue });
+    } else if (name === 'first_name') {
+      // Only allow A-Z letters and spaces for first name
+      const lettersOnly = value.replace(/[^A-Za-z\s]/g, '');
+      setFormData({ ...formData, [name]: lettersOnly });
     } else {
       setFormData({ ...formData, [name]: value });
     }

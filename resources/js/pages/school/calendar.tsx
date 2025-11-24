@@ -15,6 +15,23 @@ interface Props {
 
 export default function SchoolCalendar({ events = [] }: Props) {
     const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [showModal, setShowModal] = useState(false);
+
+    // Safe date parsing function
+    const safeParseDate = (dateString: string | null | undefined): Date | null => {
+        if (!dateString || typeof dateString !== 'string') return null;
+        const date = new Date(dateString);
+        // Check if date is valid
+        if (isNaN(date.getTime())) return null;
+        return date;
+    };
+
+    const formatDate = (dateString: string | null | undefined, options?: Intl.DateTimeFormatOptions): string => {
+        const date = safeParseDate(dateString);
+        if (!date) return 'Invalid Date';
+        return date.toLocaleDateString('en-US', options);
+    };
 
     // Convert events array to a map for easy lookup
     const eventsMap = new Map<string, CalendarEvent[]>();
@@ -78,6 +95,17 @@ export default function SchoolCalendar({ events = [] }: Props) {
             default:
                 return 'bg-gray-500';
         }
+    };
+
+    const handleDateClick = (date: Date) => {
+        const dateStr = formatDateForComparison(date);
+        setSelectedDate(dateStr);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedDate(null);
     };
 
     return (
@@ -151,7 +179,7 @@ export default function SchoolCalendar({ events = [] }: Props) {
                                 </div>
                             ))}
 
-                            {/* Calendar Days - VIEW ONLY, no click functionality */}
+                            {/* Calendar Days - Clickable to show events */}
                             {days.map((date, index) => {
                                 if (!date) {
                                     return <div key={`empty-${index}`} className="h-40" />;
@@ -162,12 +190,13 @@ export default function SchoolCalendar({ events = [] }: Props) {
                                 const isToday = formatDateForComparison(new Date()) === dateStr;
 
                                 return (
-                                    <div
+                                    <button
                                         key={`day-${date.getDate()}`}
-                                        className={`h-40 border-4 rounded-2xl p-3 relative transition-all duration-200 ${
+                                        onClick={() => handleDateClick(date)}
+                                        className={`h-40 border-4 rounded-2xl p-3 relative transition-all duration-200 cursor-pointer ${
                                             isToday
                                                 ? 'border-blue-600 bg-blue-100 dark:bg-blue-900/30 shadow-xl scale-105'
-                                                : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg'
+                                                : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:shadow-lg hover:scale-105 active:scale-95'
                                         }`}
                                     >
                                         <div
@@ -196,7 +225,7 @@ export default function SchoolCalendar({ events = [] }: Props) {
                                                 </div>
                                             )}
                                         </div>
-                                    </div>
+                                    </button>
                                 );
                             })}
                         </div>
@@ -230,15 +259,12 @@ export default function SchoolCalendar({ events = [] }: Props) {
                                                     </p>
                                                 )}
                                                 <p className="text-2xl font-semibold text-gray-700 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg inline-block">
-                                                    📅 {new Date(event.event_date).toLocaleDateString(
-                                                        'en-US',
-                                                        {
-                                                            weekday: 'long',
-                                                            year: 'numeric',
-                                                            month: 'long',
-                                                            day: 'numeric',
-                                                        }
-                                                    )}
+                                                    📅 {formatDate(event.event_date, {
+                                                        weekday: 'long',
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                    })}
                                                 </p>
                                             </div>
                                         </div>
@@ -249,6 +275,86 @@ export default function SchoolCalendar({ events = [] }: Props) {
                     )}
                 </div>
             </div>
+
+            {/* Events Modal */}
+            {showModal && selectedDate && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-6"
+                    onClick={handleCloseModal}
+                >
+                    <div
+                        className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
+                                📅 Events for {formatDate(selectedDate, {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                })}
+                            </h2>
+                            <button
+                                onClick={handleCloseModal}
+                                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                            >
+                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {eventsMap.get(selectedDate) && eventsMap.get(selectedDate)!.length > 0 ? (
+                            <div className="space-y-4">
+                                {eventsMap.get(selectedDate)!.map((event) => (
+                                    <div
+                                        key={event.id}
+                                        className="border-4 border-gray-200 dark:border-gray-700 rounded-2xl p-6 hover:shadow-xl transition-all duration-200 bg-gray-50 dark:bg-gray-700/50"
+                                    >
+                                        <div className="flex items-start gap-5">
+                                            <div
+                                                className={`w-8 h-8 rounded-lg ${getEventColor(
+                                                    event.event_type
+                                                )} shadow-md flex-shrink-0`}
+                                            />
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+                                                        {event.title}
+                                                    </h3>
+                                                    <span className={`${getEventColor(event.event_type)} text-white text-sm font-semibold px-3 py-1 rounded-lg`}>
+                                                        {event.event_type.charAt(0).toUpperCase() + event.event_type.slice(1)}
+                                                    </span>
+                                                </div>
+                                                {event.description && (
+                                                    <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
+                                                        {event.description}
+                                                    </p>
+                                                )}
+                                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg inline-block">
+                                                    📅 {formatDate(event.event_date, {
+                                                        weekday: 'long',
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                    })}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12">
+                                <div className="text-6xl mb-4">📅</div>
+                                <p className="text-2xl text-gray-500 dark:text-gray-400 mb-2">No events on this date</p>
+                                <p className="text-lg text-gray-400 dark:text-gray-500">This date has no scheduled events</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
         </>
     );
 }
